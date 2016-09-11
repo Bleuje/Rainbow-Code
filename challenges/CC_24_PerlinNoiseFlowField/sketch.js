@@ -15,7 +15,10 @@ var flowfield;
 var speedSlide,incSlider,forceNoiseSlider,forceMagSlider;
 
 function setup() {
-  createCanvas(800, 400);
+  var cnv = createCanvas(800, 400);
+  var x = (windowWidth - width) / 2;
+  var y = (windowHeight - height) / 2;
+  cnv.position(x, y);
   colorMode(RGB, 255);
   cols = floor(width / scl);
   rows = floor(height / scl);
@@ -52,6 +55,16 @@ function mousePressed() {
 
 function reset() {
     location.reload();
+}
+
+function centerCanvas() {
+  var x = (windowWidth - width) / 2;
+  var y = (windowHeight - height) / 2;
+  cnv.position(x, y);
+}
+
+function windowResized() {
+  centerCanvas();
 }
 
 
