@@ -1,11 +1,8 @@
-// Daniel Shiffman
-// http://codingrainbow.com
-// http://patreon.com/codingrainbow
-// Code for: https://youtu.be/BjoM9oKOAKY
-
-var inc = 0.1;
-var scl = 10;
+var inc = 0.01;
+var scl = 20;
 var cols, rows;
+
+var NB_PARTICLES = 1000;
 
 var zoff = 0;
 
@@ -15,20 +12,48 @@ var particles = [];
 
 var flowfield;
 
+var speedSlide,incSlider,forceNoiseSlider,forceMagSlider;
+
 function setup() {
-  createCanvas(400, 400);
-  colorMode(HSB, 255);
+  createCanvas(800, 400);
+  colorMode(RGB, 255);
   cols = floor(width / scl);
   rows = floor(height / scl);
-  fr = createP('');
 
   flowfield = new Array(cols * rows);
 
-  for (var i = 0; i < 300; i++) {
+  for (var i = 0; i < NB_PARTICLES; i++) {
     particles[i] = new Particle();
   }
-  background(51);
+  background(255);
+  
+  button = createButton('Reset');
+  button.mousePressed(reset);
+  
+  createP('Speed : ');
+  speedSlider = createSlider(0, 0.98, 0.7,0.02);
+  createP('Space Noise : ');
+  incSlider = createSlider(0, 0.3, inc,0.001);
+  createP('Force noise : ');
+  forceNoiseSlider = createSlider(0, 10, 2.0, 0.1);
+  createP('Force field magnitude : ');
+  forceMagSlider = createSlider(0, 10, 2.0, 0.1);
+  createP('Color gradient speed : ');
+  colorGradientSlider = createSlider(0, 10, 1.0, 0.1);
+  createP('Max pen size : ');
+  penSizeSlider = createSlider(0, 150, 40.0, 1);
+  fr = createP('');
+  
 }
+
+function mousePressed() {
+  //noLoop();
+}
+
+function reset() {
+    location.reload();
+}
+
 
 function draw() {
   var yoff = 0;
@@ -38,20 +63,14 @@ function draw() {
       var index = x + y * cols;
       var angle = noise(xoff, yoff, zoff) * TWO_PI * 4;
       var v = p5.Vector.fromAngle(angle);
-      v.setMag(1);
+      v.setMag(forceMagSlider.value());
       flowfield[index] = v;
-      xoff += inc;
-      stroke(0, 50);
-      // push();
-      // translate(x * scl, y * scl);
-      // rotate(v.heading());
-      // strokeWeight(1);
-      // line(0, 0, scl, 0);
-      // pop();
+      xoff += incSlider.value();
     }
-    yoff += inc;
+    yoff += incSlider.value();
 
-    zoff += 0.0003;
+    zoff += 0.00008;
+    
   }
 
   for (var i = 0; i < particles.length; i++) {
@@ -61,5 +80,5 @@ function draw() {
     particles[i].show();
   }
 
-  fr.html(floor(frameRate()));
+  fr.html("FPS : " + floor(frameRate()));
 }
