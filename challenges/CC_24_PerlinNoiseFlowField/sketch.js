@@ -18,12 +18,9 @@ var HEI = 400;
 var speedSlide,incSlider,forceNoiseSlider,forceMagSlider;
 
 function setup() {
-  var back = createCanvas(WID+6, HEI+6);
+  var cnv = createCanvas(WID, HEI);
   var x = (windowWidth - width) / 2;
   var y = (windowHeight - height) / 2;
-  background(200);
-  back.position(x, y);
-  var cnv = createCanvas(WID, HEI);
   cnv.position(x, y);
   colorMode(RGB, 255);
   cols = floor(width / scl);
