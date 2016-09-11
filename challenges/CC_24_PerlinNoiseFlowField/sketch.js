@@ -28,7 +28,7 @@ function setup() {
   for (var i = 0; i < NB_PARTICLES; i++) {
     particles[i] = new Particle();
   }
-  background(255);
+  background(255,150);
   
   button = createButton('Reset');
   button.mousePressed(reset);
