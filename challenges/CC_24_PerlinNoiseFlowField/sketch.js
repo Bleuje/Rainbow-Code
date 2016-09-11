@@ -13,7 +13,7 @@ var particles = [];
 var flowfield;
 
 var WID = 800;
-var HEI = 400;
+var HEI = 200;
 
 var speedSlide,incSlider,forceNoiseSlider,forceMagSlider;
 
