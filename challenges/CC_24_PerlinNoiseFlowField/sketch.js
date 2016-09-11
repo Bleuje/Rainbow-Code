@@ -33,12 +33,14 @@ function setup() {
   }
   background(255);
   
-  button = createButton('Reset');
+  button = createButton('Reset with new color gradient');
   button.mousePressed(reset);
+  button2 = createButton('Stop');
+  button2.mousePressed(noLoop);
   
   createP('Speed : ');
   speedSlider = createSlider(0, 0.98, 0.7,0.02);
-  createP('Space noise : ');
+  createP('Space offset : ');
   incSlider = createSlider(0, 0.3, inc,0.001);
   createP('Force noise : ');
   forceNoiseSlider = createSlider(0, 10, 2.0, 0.1);
@@ -47,7 +49,7 @@ function setup() {
   createP('Color gradient speed : ');
   colorGradientSlider = createSlider(0, 10, 1.0, 0.1);
   createP('Max pen size : ');
-  penSizeSlider = createSlider(0, 150, 40.0, 1);
+  penSizeSlider = createSlider(5, 150, 40.0, 1);
   createP('Force field change rate : ');
   fieldChangeRateSlider = createSlider(0, 0.002, 0.00008, 0.00001);
   fr = createP('');
