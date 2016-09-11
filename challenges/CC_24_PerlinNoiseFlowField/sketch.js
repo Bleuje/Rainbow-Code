@@ -12,12 +12,18 @@ var particles = [];
 
 var flowfield;
 
+var WID = 800;
+var HEI = 400;
+
 var speedSlide,incSlider,forceNoiseSlider,forceMagSlider;
 
 function setup() {
-  var cnv = createCanvas(800, 400);
+  var back = createCanvas(WID+6, HEI+6);
   var x = (windowWidth - width) / 2;
   var y = (windowHeight - height) / 2;
+  background(200);
+  back.position(x, y);
+  var cnv = createCanvas(WID, HEI);
   cnv.position(x, y);
   colorMode(RGB, 255);
   cols = floor(width / scl);
@@ -28,7 +34,7 @@ function setup() {
   for (var i = 0; i < NB_PARTICLES; i++) {
     particles[i] = new Particle();
   }
-  background(255,150);
+  background(255);
   
   button = createButton('Reset');
   button.mousePressed(reset);
