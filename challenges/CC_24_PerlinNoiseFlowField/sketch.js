@@ -41,7 +41,7 @@ function setup() {
   
   createP('Speed : ');
   speedSlider = createSlider(0, 0.98, 0.7,0.02);
-  createP('Space Noise : ');
+  createP('Space noise : ');
   incSlider = createSlider(0, 0.3, inc,0.001);
   createP('Force noise : ');
   forceNoiseSlider = createSlider(0, 10, 2.0, 0.1);
@@ -51,6 +51,8 @@ function setup() {
   colorGradientSlider = createSlider(0, 10, 1.0, 0.1);
   createP('Max pen size : ');
   penSizeSlider = createSlider(0, 150, 40.0, 1);
+  createP('Force field change rate : ');
+  fieldChangeRateSlider = createSlider(0, 0.002, 0.00008, 0.00001);
   fr = createP('');
   
 }
@@ -88,7 +90,7 @@ function draw() {
     }
     yoff += incSlider.value();
 
-    zoff += 0.00008;
+    zoff += fieldChangeRateSlider.value();
     
   }
 
