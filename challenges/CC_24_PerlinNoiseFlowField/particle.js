@@ -32,7 +32,7 @@ function Particle() {
     this.acc.add(force);
     this.acc.add(createVector(-circleforce1*yy,circleforce1*xx));
     this.acc.add(createVector(circleforce2*xx,circleforce2*yy));
-    this.acc.add(createVector(random(forceNoiseSlider.value()),random(forceNoiseSlider.value())));
+    this.acc.add(createVector((2*random()-1)*forceNoiseSlider.value(),(2*random()-1)*forceNoiseSlider.value()));
   }
   
     var off1 = 50*noise(10000);
