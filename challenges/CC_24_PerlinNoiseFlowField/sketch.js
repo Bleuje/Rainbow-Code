@@ -43,7 +43,7 @@ function setup() {
   button2.mousePressed(pause_play);
   button3 = createButton('Save canvas');
   button3.mousePressed(canvas_save);
-  button4 = createButton('Clear');
+  button4 = createButton('Clear canvas');
   button4.mousePressed(clear_canvas);
   button5 = createButton('Change color gradient');
   button5.mousePressed(change_color);
@@ -74,6 +74,11 @@ function setup() {
   nbp2 = createP('Number of particles in the next set : ');
   particleNumberSlider = createSlider(1, 2500, 700, 1);
   fr = createP('');
+  
+  createP('Border bounce : ');
+  bounceSlider = createSlider(0, 1, 0, 1);
+  createP('Mouse attraction/repulsion factor : ');
+  mouseSlider = createSlider(-3, 3, 1.2, 0.01);
 }
 
 function mousePressed() {

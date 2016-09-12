@@ -53,14 +53,18 @@ function Particle(pos_seed) {
   }
 
   this.applyForce = function(force) {
-    var circleforce1 = 0;
-    var circleforce2 = 0;
     var xx = (this.pos.x - width/2)/width;
     var yy = (this.pos.y - height/2)/height;
     this.acc.add(force);
-    this.acc.add(createVector(-circleforce1*yy,circleforce1*xx));
-    this.acc.add(createVector(circleforce2*xx,circleforce2*yy));
     this.acc.add(createVector((2*random()-1)*forceNoiseSlider.value(),(2*random()-1)*forceNoiseSlider.value()));
+    
+    if (mouseIsPressed && mouseX>=0 && mouseY>=0 && mouseX<width && mouseY<height) {
+        var attraction = createVector(mouseX - this.pos.x,mouseY - this.pos.y);
+        attraction.normalize();
+        attraction.mult(mouseSlider.value()*forceMagSlider.value());
+        this.acc.add(attraction);
+    }
+    
   }
   
     var off1 = 50*noise(10000);
@@ -91,21 +95,41 @@ function Particle(pos_seed) {
   }
 
   this.edges = function() {
-    if (this.pos.x > width) {
-      this.pos.x = 0;
-      this.updatePrev();
-    }
-    if (this.pos.x < 0) {
-      this.pos.x = width;
-      this.updatePrev();
-    }
-    if (this.pos.y > height) {
-      this.pos.y = 0;
-      this.updatePrev();
-    }
-    if (this.pos.y < 0) {
-      this.pos.y = height;
-      this.updatePrev();
+    
+    if (bounceSlider.value()) {
+      if (this.pos.x > width) {
+        this.vel.x *= -2;
+        this.updatePrev();
+      }
+      if (this.pos.x < 0) {
+        this.vel.x *= -2;
+        this.updatePrev();
+      }
+      if (this.pos.y > height) {
+        this.vel.y *= -2;
+        this.updatePrev();
+      }
+      if (this.pos.y < 0) {
+        this.vel.y *= -2;
+        this.updatePrev();
+      }
+    } else {
+      if (this.pos.x > width) {
+        this.pos.x = 0;
+        this.updatePrev();
+      }
+      if (this.pos.x < 0) {
+        this.pos.x = width;
+        this.updatePrev();
+      }
+      if (this.pos.y > height) {
+        this.pos.y = 0;
+        this.updatePrev();
+      }
+      if (this.pos.y < 0) {
+        this.pos.y = height;
+        this.updatePrev();
+      }
     }
 
   }
