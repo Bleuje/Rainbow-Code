@@ -4,7 +4,13 @@ function Particle() {
   this.particuleOffset = random(10);
   this.h = this.particuleOffset;
   this.h2 = 0;
-  this.pos = createVector(width*noise(0.5*this.h), height*noise(10000+0.5*this.h));
+  
+  this.initial_position = function() {
+    this.pos = createVector(width*noise(0.5*this.h), height*noise(10000+0.5*this.h));
+    this.prevPos = this.pos.copy();
+  }
+  
+  this.initial_position();
   
   this.offp = random(10000);
   

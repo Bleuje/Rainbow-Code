@@ -19,38 +19,6 @@ var speedSlide,incSlider,forceNoiseSlider,forceMagSlider,brightSlider;
 
 var playing = true;
 
-function mousePressed() {
-  //noLoop();
-}
-
-function reset() {
-    location.reload();
-}
-
-function centerCanvas() {
-  var x = (windowWidth - width) / 2;
-  var y = (windowHeight - height) / 2;
-  cnv.position(x, y);
-}
-
-function windowResized() {
-  centerCanvas();
-}
-
-function pause_play() {
-    if (playing) {
-        playing = false;
-        noLoop();
-    } else {
-      playing = true;
-      loop();
-    }
-}
-
-function canvas_save() {
-  saveCanvas('myCanvas', 'jpg');
-}
-
 function setup() {
   var cnv = createCanvas(WID, HEI);
   //var x = (windowWidth - width) / 2;
@@ -67,12 +35,18 @@ function setup() {
   }
   background(255);
   
-  button = createButton('Reset with new color gradient');
+  button = createButton('Reset');
   button.mousePressed(reset);
   button2 = createButton('Pause/Play');
   button2.mousePressed(pause_play);
   button3 = createButton('Save canvas');
   button3.mousePressed(canvas_save);
+  button4 = createButton('Clear');
+  button4.mousePressed(clear_canvas);
+  button5 = createButton('Change color gradient');
+  button5.mousePressed(noiseSeed);
+  button6 = createButton('New position');
+  button6.mousePressed(new_position);
   
   createP('Speed : ');
   speedSlider = createSlider(0, 0.98, 0.7,0.02);
@@ -96,6 +70,44 @@ function setup() {
   particleColorOffsetSlider = createSlider(0.1, 10, 1, 0.1);
   fr = createP('');
   
+}
+
+function mousePressed() {
+  //noLoop();
+}
+
+function clear_canvas() {
+  background(255);
+}
+
+function new_position() {
+  for(var i = 0;i<NB_PARTICLES;i++){
+    particles[i].initial_position();
+  }
+}
+
+function reset() {
+    location.reload();
+    seedRandom();
+    seedNoise();
+}
+
+function windowResized() {
+  centerCanvas();
+}
+
+function pause_play() {
+    if (playing) {
+        playing = false;
+        noLoop();
+    } else {
+      playing = true;
+      loop();
+    }
+}
+
+function canvas_save() {
+  saveCanvas('myCanvas', 'jpg');
 }
 
 function draw() {
