@@ -44,7 +44,7 @@ function setup() {
   button4 = createButton('Clear');
   button4.mousePressed(clear_canvas);
   button5 = createButton('Change color gradient');
-  button5.mousePressed(noiseSeed);
+  button5.mousePressed(change_color);
   button6 = createButton('New position');
   button6.mousePressed(new_position);
   
@@ -80,6 +80,10 @@ function clear_canvas() {
   background(255);
 }
 
+function change_color() {
+  noiseSeed(12345*random());
+}
+
 function new_position() {
   for(var i = 0;i<NB_PARTICLES;i++){
     particles[i].initial_position();
@@ -92,9 +96,6 @@ function reset() {
     seedNoise();
 }
 
-function windowResized() {
-  centerCanvas();
-}
 
 function pause_play() {
     if (playing) {
