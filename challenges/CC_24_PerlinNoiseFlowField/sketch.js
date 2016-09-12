@@ -47,11 +47,15 @@ function pause_play() {
     }
 }
 
+function canvas_save() {
+  saveCanvas('myCanvas', 'jpg');
+}
+
 function setup() {
   var cnv = createCanvas(WID, HEI);
-  var x = (windowWidth - width) / 2;
-  var y = (windowHeight - height) / 2;
-  cnv.position(x, y);
+  //var x = (windowWidth - width) / 2;
+  //var y = (windowHeight - height) / 2;
+  cnv.position(200, 100);
   colorMode(RGB, 255);
   cols = floor(width / scl);
   rows = floor(height / scl);
@@ -67,6 +71,8 @@ function setup() {
   button.mousePressed(reset);
   button2 = createButton('Pause/Play');
   button2.mousePressed(pause_play);
+  button3 = createButton('Save canvas');
+  button3.mousePressed(canvas_save);
   
   createP('Speed : ');
   speedSlider = createSlider(0, 0.98, 0.7,0.02);
@@ -117,7 +123,7 @@ function draw() {
     particles[i].show();
   }
   
-  frameRate(27);
+  frameRate(30);
 
   fr.html("FPS : " + floor(frameRate()));
 }
