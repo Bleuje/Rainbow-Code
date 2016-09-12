@@ -29,9 +29,11 @@ function setup() {
   rows = floor(height / scl);
 
   flowfield = new Array(cols * rows);
+  
+  var pseed = random();
 
   for (var i = 0; i < NB_PARTICLES; i++) {
-    particles[i] = new Particle();
+    particles[i] = new Particle(pseed);
   }
   background(255);
   
@@ -45,8 +47,8 @@ function setup() {
   button4.mousePressed(clear_canvas);
   button5 = createButton('Change color gradient');
   button5.mousePressed(change_color);
-  button6 = createButton('New position');
-  button6.mousePressed(new_position);
+  button6 = createButton('New set of particles');
+  button6.mousePressed(new_particles);
   
   createP('Speed : ');
   speedSlider = createSlider(0, 0.98, 0.7,0.02);
@@ -68,8 +70,10 @@ function setup() {
   brightSlider = createSlider(10, 275, 155, 1);
   createP('Particle color offset : ');
   particleColorOffsetSlider = createSlider(0.1, 10, 1, 0.1);
+  nbp = createP('Current number of particles : ' + NB_PARTICLES);
+  nbp2 = createP('Number of particles in the next set : ');
+  particleNumberSlider = createSlider(1, 2500, 700, 1);
   fr = createP('');
-  
 }
 
 function mousePressed() {
@@ -84,9 +88,14 @@ function change_color() {
   noiseSeed(12345*random());
 }
 
-function new_position() {
+function new_particles() {
+  for(var i = NB_PARTICLES-1;i>=0;i--){
+    particles.pop();
+  }
+  NB_PARTICLES = particleNumberSlider.value();
+  var pseed = random();
   for(var i = 0;i<NB_PARTICLES;i++){
-    particles[i].initial_position();
+    particles[i] = new Particle(pseed);
   }
 }
 
@@ -139,4 +148,6 @@ function draw() {
   frameRate(30);
 
   fr.html("FPS : " + floor(frameRate()));
+  
+  nbp2.html('Number of particles in the next set : '+particleNumberSlider.value());
 }

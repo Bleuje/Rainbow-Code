@@ -1,16 +1,16 @@
-function Particle() {
+function Particle(pos_seed) {
   this.vel = createVector(0, 0);
   this.acc = createVector(0, 0);
   this.particuleOffset = random(10);
   this.h = this.particuleOffset;
   this.h2 = 0;
   
-  this.initial_position = function() {
-    this.pos = createVector(width*noise(0.5*this.h), height*noise(10000+0.5*this.h));
+  this.initial_position = function(pos_seed) {
+    this.pos = createVector(width*noise(1000*pos_seed + 0.5*random()), height*noise(2000*pos_seed + 0.5*random()));
     this.prevPos = this.pos.copy();
   }
   
-  this.initial_position();
+  this.initial_position(pos_seed);
   
   this.offp = random(10000);
   
