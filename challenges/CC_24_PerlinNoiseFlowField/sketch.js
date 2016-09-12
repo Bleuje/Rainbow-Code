@@ -2,7 +2,7 @@ var inc = 0.01;
 var scl = 20;
 var cols, rows;
 
-var NB_PARTICLES = 1000;
+var NB_PARTICLES = 700;
 
 var zoff = 0;
 
@@ -15,46 +15,9 @@ var flowfield;
 var WID = 800;
 var HEI = 400;
 
-var speedSlide,incSlider,forceNoiseSlider,forceMagSlider;
+var speedSlide,incSlider,forceNoiseSlider,forceMagSlider,brightSlider;
 
-function setup() {
-  var cnv = createCanvas(WID, HEI);
-  var x = (windowWidth - width) / 2;
-  var y = (windowHeight - height) / 2;
-  cnv.position(x, y);
-  colorMode(RGB, 255);
-  cols = floor(width / scl);
-  rows = floor(height / scl);
-
-  flowfield = new Array(cols * rows);
-
-  for (var i = 0; i < NB_PARTICLES; i++) {
-    particles[i] = new Particle();
-  }
-  background(255);
-  
-  button = createButton('Reset with new color gradient');
-  button.mousePressed(reset);
-  button2 = createButton('Stop');
-  button2.mousePressed(noLoop);
-  
-  createP('Speed : ');
-  speedSlider = createSlider(0, 0.98, 0.7,0.02);
-  createP('Space offset : ');
-  incSlider = createSlider(0, 0.3, inc,0.001);
-  createP('Force noise : ');
-  forceNoiseSlider = createSlider(0, 10, 2.0, 0.1);
-  createP('Force field magnitude : ');
-  forceMagSlider = createSlider(0, 10, 2.0, 0.1);
-  createP('Color gradient speed : ');
-  colorGradientSlider = createSlider(0, 10, 1.0, 0.1);
-  createP('Max pen size : ');
-  penSizeSlider = createSlider(5, 150, 40.0, 1);
-  createP('Force field change rate : ');
-  fieldChangeRateSlider = createSlider(0, 0.002, 0.00008, 0.00001);
-  fr = createP('');
-  
-}
+var playing = true;
 
 function mousePressed() {
   //noLoop();
@@ -74,6 +37,60 @@ function windowResized() {
   centerCanvas();
 }
 
+function pause_play() {
+    if (playing) {
+        playing = false;
+        noLoop();
+    } else {
+      playing = true;
+      loop();
+    }
+}
+
+function setup() {
+  var cnv = createCanvas(WID, HEI);
+  var x = (windowWidth - width) / 2;
+  var y = (windowHeight - height) / 2;
+  cnv.position(x, y);
+  colorMode(RGB, 255);
+  cols = floor(width / scl);
+  rows = floor(height / scl);
+
+  flowfield = new Array(cols * rows);
+
+  for (var i = 0; i < NB_PARTICLES; i++) {
+    particles[i] = new Particle();
+  }
+  background(255);
+  
+  button = createButton('Reset with new color gradient');
+  button.mousePressed(reset);
+  button2 = createButton('Pause/Play');
+  button2.mousePressed(pause_play);
+  
+  createP('Speed : ');
+  speedSlider = createSlider(0, 0.98, 0.7,0.02);
+  createP('Space offset : ');
+  incSlider = createSlider(0, 0.3, inc,0.001);
+  createP('Force noise : ');
+  forceNoiseSlider = createSlider(0, 10, 2.0, 0.1);
+  createP('Force field magnitude : ');
+  forceMagSlider = createSlider(0, 10, 2.0, 0.1);
+  createP('Force field change rate : ');
+  fieldChangeRateSlider = createSlider(0, 0.002, 0.00008, 0.00001);
+  createP('Color gradient speed : ');
+  colorGradientSlider = createSlider(0, 10, 1.0, 0.1);
+  createP('Max pen size : ');
+  penSizeSlider = createSlider(5, 150, 40.0, 1);
+  createP('Color contrast : ');
+  contrastSlider = createSlider(10, 275, 125, 1);
+  createP('Color brightness : ');
+  brightSlider = createSlider(10, 275, 155, 1);
+  createP('Particle color offset : ');
+  particleColorOffsetSlider = createSlider(0.1, 10, 1, 0.1);
+  fr = createP('');
+  
+}
 
 function draw() {
   var yoff = 0;
@@ -99,6 +116,8 @@ function draw() {
     particles[i].edges();
     particles[i].show();
   }
+  
+  frameRate(27);
 
   fr.html("FPS : " + floor(frameRate()));
 }
