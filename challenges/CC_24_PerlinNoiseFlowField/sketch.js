@@ -95,7 +95,7 @@ function setup() {
   greenoSlider.position(1050,280);
   blueoSlider = createSlider(0, 10, 10*noise(30000), 0.01);
   blueoSlider.position(1050,300);
-  p4 = createP('Color oscillation periods : ');
+  p4 = createP('Color oscillation periods (align them for simpler color gradients) : ');
   p4.position(1050,320);
   redSlider = createSlider(0, 20, 5, 1);
   redSlider.position(1050,340);
