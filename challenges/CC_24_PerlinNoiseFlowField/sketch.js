@@ -60,7 +60,7 @@ function setup() {
   button5.mousePressed(change_color);
   button6 = createButton('New set of particles (N)');
   button6.mousePressed(new_particles);
-  button7 = createButton('Rectangle mode On/Off (R)');
+  button7 = createButton('Rectangle mode On/Off (M)');
   button7.mousePressed(change_mode);
   
   
@@ -225,7 +225,7 @@ function keyTyped() {
     change_color();
   } else if (key === 'n') {
     new_particles();
-  } else if (key === 'r') {
+  } else if (key === 'm') {
     change_mode();
   }
 }
