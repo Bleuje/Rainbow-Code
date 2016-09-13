@@ -13,14 +13,14 @@ function Particle(pos_seed) {
   this.initial_position(pos_seed);
   
   this.offp = random(10000);
-  
-  this.start_red = 155*noise(12345);
-  this.start_green = 155*noise(1234)
-  this.start_blue = 155*noise(123);
-  this.amp_red = noise(3333)*125;
-  this.amp_green = noise(2222)*125;
-  this.amp_blue = noise(1111)*125;
-  
+  /*
+  this.start_red = 155*noise(12345+ redoSlider.value());
+  this.start_green = 155*noise(1234+ greenoSlider.value())
+  this.start_blue = 155*noise(123+ blueoSlider.value());
+  this.amp_red = noise(3333 + 3*redoSlider.value())*125;
+  this.amp_green = noise(2222 + 3*greenoSlider.value())*125;
+  this.amp_blue = noise(1111 + 3*blueoSlider.value())*125;
+  */
     //this.posSphere = createVector(width/2*sin(PI*this.pos.y/height)*cos(2*PI*this.pos.x/width) + width/2,height/2*cos(PI*this.pos.y/height) + height/2);
   
 
@@ -34,12 +34,12 @@ function Particle(pos_seed) {
     this.pos.add(this.vel);
     this.acc.mult(0);
     
-    this.start_red = brightSlider.value()*noise(12345);
-    this.start_green = brightSlider.value()*noise(1234)
-    this.start_blue = brightSlider.value()*noise(123);
-    this.amp_red = noise(3333)*contrastSlider.value();
-    this.amp_green = noise(2222)*contrastSlider.value();
-    this.amp_blue = noise(1111)*contrastSlider.value();
+    this.start_red = brightSlider.value()*noise(12345+ redoSlider.value());
+    this.start_green = brightSlider.value()*noise(1234+ greenoSlider.value())
+    this.start_blue = brightSlider.value()*noise(123+ blueoSlider.value());
+    this.amp_red = noise(3333+ 3*redoSlider.value())*contrastSlider.value();
+    this.amp_green = noise(2222+ 3*greenoSlider.value())*contrastSlider.value();
+    this.amp_blue = noise(1111+ 3*blueoSlider.value())*contrastSlider.value();
     
     //this.posSphere = createVector(width/2*sin(PI*this.pos.y/height)*cos(2*PI*this.pos.x/width) + width/2,height/2*cos(PI*this.pos.y/height) + height/2);
   }
@@ -66,18 +66,18 @@ function Particle(pos_seed) {
     }
     
   }
-  
-    var off1 = 50*noise(10000);
-    var off2 = 50*noise(20000);
-    var off3 = 50*noise(30000);
-    
+  /*
+    var off1 = redoSlider.value();
+    var off2 = greenoSlider.value();
+    var off3 = blueoSlider.value();
+    */
     
   this.show = function() {
     
-    var param = (sin(0.05*this.h + off1)+1)/2;
-    var param2 = (sin(0.02*this.h + off2)+1)/2;
-    var param3 = (sin(0.03*this.h + off3)+1)/2;
-    stroke(this.start_red + this.amp_red*param, this.start_green + this.amp_green*param3, this.start_blue + this.amp_blue*noise(3*param3));
+    var param = (sin(0.01*redSlider.value()*this.h + redoSlider.value())+1)/2;
+    var param2 = (sin(0.01*greenSlider.value()*this.h + greenoSlider.value())+1)/2;
+    var param3 = (sin(0.01*blueSlider.value()*this.h + blueoSlider.value())+1)/2;
+    stroke(this.start_red + this.amp_red*param, this.start_green + this.amp_green*param2, this.start_blue + this.amp_blue*param3);
     this.h2 = this.h2 + colorGradientSlider.value();
     this.h = this.particuleOffset*particleColorOffsetSlider.value() + this.h2;
     var sw = noise(20000 + 0.01*frameCount + this.offp);

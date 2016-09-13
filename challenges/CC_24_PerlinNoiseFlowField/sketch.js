@@ -37,18 +37,19 @@ function setup() {
   }
   background(255);
   
-  button = createButton('Reset');
+  button = createButton('Reset (R)');
   button.mousePressed(reset);
-  button2 = createButton('Pause/Play');
+  button2 = createButton('Pause/Play (P)');
   button2.mousePressed(pause_play);
-  button3 = createButton('Save canvas');
+  button3 = createButton('Save canvas (S)');
   button3.mousePressed(canvas_save);
-  button4 = createButton('Clear canvas');
+  button4 = createButton('Clear canvas (C)');
   button4.mousePressed(clear_canvas);
-  button5 = createButton('Change color gradient');
+  button5 = createButton('Change color gradient (G)');
   button5.mousePressed(change_color);
-  button6 = createButton('New set of particles');
+  button6 = createButton('New set of particles (N)');
   button6.mousePressed(new_particles);
+  
   
   createP('Speed : ');
   speedSlider = createSlider(0, 0.98, 0.7,0.02);
@@ -71,14 +72,43 @@ function setup() {
   createP('Particle color offset : ');
   particleColorOffsetSlider = createSlider(0.1, 10, 1, 0.1);
   nbp = createP('Current number of particles : ' + NB_PARTICLES);
+  nbp.position(1050,100);
   nbp2 = createP('Number of particles in the next set : ');
+  nbp2.position(1050,120);
   particleNumberSlider = createSlider(1, 2500, 700, 1);
+  particleNumberSlider.position(1050,140);
   fr = createP('');
   
-  createP('Border bounce : ');
+  p1 = createP('Border bounce : ');
+  p1.position(1050,160);
   bounceSlider = createSlider(0, 1, 0, 1);
-  createP('Mouse attraction/repulsion factor : ');
-  mouseSlider = createSlider(-3, 3, 1.2, 0.01);
+  bounceSlider.position(1050,180);
+  p2 = createP('Mouse attraction/repulsion factor : ');
+  p2.position(1050,200);
+  mouseSlider = createSlider(-4, 4, -1.4, 0.01);
+  mouseSlider.position(1050,220);
+  p3 = createP('Color offsets : ');
+  p3.position(1050,240);
+  redoSlider = createSlider(0, 10, 10*noise(10000), 0.01);
+  redoSlider.position(1050,260);
+  greenoSlider = createSlider(0, 10, 10*noise(20000), 0.01);
+  greenoSlider.position(1050,280);
+  blueoSlider = createSlider(0, 10, 10*noise(30000), 0.01);
+  blueoSlider.position(1050,300);
+  p4 = createP('Color oscillation periods : ');
+  p4.position(1050,320);
+  redSlider = createSlider(0, 20, 5, 1);
+  redSlider.position(1050,340);
+  greenSlider = createSlider(0, 20, 2, 1);
+  greenSlider.position(1050,360);
+  blueSlider = createSlider(0, 20, 3, 1);
+  blueSlider.position(1050,380);
+  p5_ = createP('Background fade : ');
+  p5_.position(1050,400);
+  fade1Slider = createSlider(0, 1, 0, 0.01);
+  fade1Slider.position(1050,420);
+  fade2Slider = createSlider(0, 255, 255, 1);
+  fade2Slider.position(1050,440);
 }
 
 function mousePressed() {
@@ -121,11 +151,43 @@ function pause_play() {
     }
 }
 
+  button = createButton('Reset (R)');
+  button.mousePressed(reset);
+  button2 = createButton('Pause/Play (P)');
+  button2.mousePressed(pause_play);
+  button3 = createButton('Save canvas (S)');
+  button3.mousePressed(canvas_save);
+  button4 = createButton('Clear canvas (C)');
+  button4.mousePressed(clear_canvas);
+  button5 = createButton('Change color gradient (G)');
+  button5.mousePressed(change_color);
+  button6 = createButton('New set of particles (N)');
+  button6.mousePressed(new_particles);
+
+function keyTyped() {
+  if (key === 'p') {
+    pause_play();
+  } else if (key === 'r') {
+    reset();
+  } else if (key === 'c') {
+    clear_canvas();
+  } else if (key === 's') {
+    canvas_save();
+  } else if (key === 'g') {
+    change_color();
+  } else if (key === 'n') {
+    new_particles();
+  }
+}
+
 function canvas_save() {
   saveCanvas('myCanvas', 'jpg');
 }
 
 function draw() {
+  var aux = fade1Slider.value();
+  background(fade2Slider.value(),255*aux*aux*aux);
+  
   var yoff = 0;
   for (var y = 0; y < rows; y++) {
     var xoff = 0;
@@ -150,9 +212,10 @@ function draw() {
     particles[i].show();
   }
   
-  frameRate(30);
+  frameRate(40);
 
   fr.html("FPS : " + floor(frameRate()));
   
-  nbp2.html('Number of particles in the next set : '+particleNumberSlider.value());
+  nbp.html('Current number of particles : ' + NB_PARTICLES);
+  nbp2.html('Number of particles in the next set : ' + particleNumberSlider.value());
 }
