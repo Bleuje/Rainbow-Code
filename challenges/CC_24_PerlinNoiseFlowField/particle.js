@@ -38,8 +38,8 @@ function Particle(pos_seed) {
     this.start_green = brightSlider.value()*noise(1234+ greenoSlider.value())
     this.start_blue = brightSlider.value()*noise(123+ blueoSlider.value());
     this.amp_red = noise(3333+ 3*redoSlider.value())*contrastSlider.value();
-    this.amp_green = noise(2222+ 3*greenoSlider.value())*contrastSlider.value();
-    this.amp_blue = noise(1111+ 3*blueoSlider.value())*contrastSlider.value();
+    this.amp_green = noise(2222+ 4*greenoSlider.value())*contrastSlider.value();
+    this.amp_blue = noise(1111+ 5*blueoSlider.value())*contrastSlider.value();
     
     //this.posSphere = createVector(width/2*sin(PI*this.pos.y/height)*cos(2*PI*this.pos.x/width) + width/2,height/2*cos(PI*this.pos.y/height) + height/2);
   }
