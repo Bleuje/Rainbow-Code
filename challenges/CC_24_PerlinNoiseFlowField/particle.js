@@ -13,24 +13,12 @@ function Particle(pos_seed) {
   this.initial_position(pos_seed);
   
   this.offp = random(10000);
-  /*
-  this.start_red = 155*noise(12345+ redoSlider.value());
-  this.start_green = 155*noise(1234+ greenoSlider.value())
-  this.start_blue = 155*noise(123+ blueoSlider.value());
-  this.amp_red = noise(3333 + 3*redoSlider.value())*125;
-  this.amp_green = noise(2222 + 3*greenoSlider.value())*125;
-  this.amp_blue = noise(1111 + 3*blueoSlider.value())*125;
-  */
-    //this.posSphere = createVector(width/2*sin(PI*this.pos.y/height)*cos(2*PI*this.pos.x/width) + width/2,height/2*cos(PI*this.pos.y/height) + height/2);
-  
 
   this.prevPos = this.pos.copy();
-  //this.prevPosSphere = this.posSphere.copy();
 
   this.update = function() {
     this.vel.add(this.acc);
     this.vel.mult(speedSlider.value());
-    //this.vel.limit(this.maxspeed);
     this.pos.add(this.vel);
     this.acc.mult(0);
     
@@ -66,11 +54,6 @@ function Particle(pos_seed) {
     }
     
   }
-  /*
-    var off1 = redoSlider.value();
-    var off2 = greenoSlider.value();
-    var off3 = blueoSlider.value();
-    */
     
   this.show = function() {
     
@@ -78,20 +61,17 @@ function Particle(pos_seed) {
     var param2 = (sin(0.01*greenSlider.value()*this.h + greenoSlider.value())+1)/2;
     var param3 = (sin(0.01*blueSlider.value()*this.h + blueoSlider.value())+1)/2;
     stroke(this.start_red + this.amp_red*param, this.start_green + this.amp_green*param2, this.start_blue + this.amp_blue*param3);
-    this.h2 = this.h2 + colorGradientSlider.value();
+    this.h2 = this.h2 + colorGradientSlider.value()*colorGradientSlider.value();
     this.h = this.particuleOffset*particleColorOffsetSlider.value() + this.h2;
     var sw = noise(20000 + 0.01*frameCount + this.offp);
     strokeWeight(penSizeSlider.value()*sw*sw*sw);
     line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
-    //line(this.posSphere.x, this.posSphere.y, this.prevPosSphere.x, this.prevPosSphere.y);
     this.updatePrev();
   }
 
   this.updatePrev = function() {
     this.prevPos.x = this.pos.x;
     this.prevPos.y = this.pos.y;
-    //this.prevPosSphere.x = this.posSphere.x;
-    //this.prevPosSphere.y = this.posSphere.y;
   }
 
   this.edges = function() {

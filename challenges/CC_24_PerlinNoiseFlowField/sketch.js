@@ -10,6 +10,9 @@ var fr;
 
 var particles = [];
 
+
+var rectangles = [];
+
 var flowfield;
 
 var WID = 800;
@@ -18,6 +21,8 @@ var HEI = 400;
 var speedSlide,incSlider,forceNoiseSlider,forceMagSlider,brightSlider;
 
 var playing = true;
+
+var mode = 0;
 
 function setup() {
   var cnv = createCanvas(WID, HEI);
@@ -31,9 +36,15 @@ function setup() {
   flowfield = new Array(cols * rows);
   
   var pseed = random();
-
-  for (var i = 0; i < NB_PARTICLES; i++) {
-    particles[i] = new Particle(pseed);
+  
+  if (mode === 1) {
+    for (var i = 0; i < NB_PARTICLES; i++) {
+      rectangles[i] = new Rectangle(pseed);
+    }
+  } else {
+    for (var i = 0; i < NB_PARTICLES; i++) {
+      particles[i] = new Particle(pseed);
+    }
   }
   background(255);
   
@@ -49,6 +60,8 @@ function setup() {
   button5.mousePressed(change_color);
   button6 = createButton('New set of particles (N)');
   button6.mousePressed(new_particles);
+  button7 = createButton('Rectangle mode On/Off (R)');
+  button7.mousePressed(change_mode);
   
   
   createP('Speed : ');
@@ -62,7 +75,7 @@ function setup() {
   createP('Force field change rate : ');
   fieldChangeRateSlider = createSlider(0, 0.002, 0.00008, 0.00001);
   createP('Color gradient speed : ');
-  colorGradientSlider = createSlider(0, 10, 1.0, 0.1);
+  colorGradientSlider = createSlider(0, sqrt(50), 1.0, 0.01);
   createP('Max pen size : ');
   penSizeSlider = createSlider(5, 150, 40.0, 1);
   createP('Color contrast : ');
@@ -75,7 +88,7 @@ function setup() {
   nbp.position(1050,100);
   nbp2 = createP('Number of particles in the next set : ');
   nbp2.position(1050,120);
-  particleNumberSlider = createSlider(1, 2500, 700, 1);
+  particleNumberSlider = createSlider(1, sqrt(sqrt(2500)), sqrt(sqrt(700)), 0.01);
   particleNumberSlider.position(1050,140);
   fr = createP('');
   
@@ -95,20 +108,41 @@ function setup() {
   greenoSlider.position(1050,280);
   blueoSlider = createSlider(0, 10, 10*noise(30000), 0.01);
   blueoSlider.position(1050,300);
-  p4 = createP('Color oscillation periods (align them for simpler color gradients) : ');
+  p4 = createP('Color oscillation periods : ');
+  p4bis = createP('(Align them or set them to 0 to get simpler color gradients)');
   p4.position(1050,320);
-  redSlider = createSlider(0, 20, 5, 1);
-  redSlider.position(1050,340);
-  greenSlider = createSlider(0, 20, 2, 1);
-  greenSlider.position(1050,360);
+  p4bis.position(1050,340);
+  redSlider = createSlider(0, 20, 3, 1);
+  redSlider.position(1050,360);
+  greenSlider = createSlider(0, 20, 3, 1);
+  greenSlider.position(1050,380);
   blueSlider = createSlider(0, 20, 3, 1);
-  blueSlider.position(1050,380);
+  blueSlider.position(1050,400);
   p5_ = createP('Background fade : ');
-  p5_.position(1050,400);
+  p5_.position(1050,420);
   fade1Slider = createSlider(0, 1, 0, 0.01);
-  fade1Slider.position(1050,420);
+  fade1Slider.position(1050,440);
   fade2Slider = createSlider(0, 255, 255, 1);
-  fade2Slider.position(1050,440);
+  fade2Slider.position(1050,460);
+  
+  p6 = createP('Max frame Rate : ');
+  p6.position(200,520);
+  framerateSlider = createSlider(1, 60, 40, 1);
+  framerateSlider.position(200,540);
+  
+  p7 = createP('<strong>Settings for rectangle mode : </strong>');
+  p7.position(20,580);
+  p8 = createP('Rectangle stroke : ');
+  p8.position(20,600);
+  boxSlider = createSlider(0, 255, 50, 1);
+  boxSlider.position(20,620);
+  box2Slider = createSlider(0, 255, 0, 1);
+  box2Slider.position(20,640);
+  p9 = createP('Freeze ratio : ');
+  p9.position(200,600);
+  freezeSlider = createSlider(0, 100, 50, 1);
+  freezeSlider.position(200,620);
+
 }
 
 function mousePressed() {
@@ -127,10 +161,19 @@ function new_particles() {
   for(var i = NB_PARTICLES-1;i>=0;i--){
     particles.pop();
   }
-  NB_PARTICLES = particleNumberSlider.value();
+  for(var i = NB_PARTICLES-1;i>=0;i--){
+    rectangles.pop();
+  }
+  NB_PARTICLES = int(particleNumberSlider.value()*particleNumberSlider.value()*particleNumberSlider.value()*particleNumberSlider.value());
   var pseed = random();
-  for(var i = 0;i<NB_PARTICLES;i++){
-    particles[i] = new Particle(pseed);
+  if (mode === 0) {
+    for(var i = 0;i<NB_PARTICLES;i++){
+      particles[i] = new Particle(pseed);
+    }
+  } else {
+    for(var i = 0;i<NB_PARTICLES;i++){
+      rectangles[i] = new Rectangle(pseed);
+    }
   }
 }
 
@@ -138,6 +181,11 @@ function reset() {
     location.reload();
     seedRandom();
     seedNoise();
+}
+
+function change_mode() {
+    mode = (mode + 1) % 2;
+    new_particles();
 }
 
 
@@ -177,11 +225,13 @@ function keyTyped() {
     change_color();
   } else if (key === 'n') {
     new_particles();
+  } else if (key === 'r') {
+    change_mode();
   }
 }
 
 function canvas_save() {
-  saveCanvas('myCanvas', 'jpg');
+  saveCanvas('myCanvas', 'png');
 }
 
 function draw() {
@@ -205,17 +255,26 @@ function draw() {
     
   }
 
-  for (var i = 0; i < particles.length; i++) {
-    particles[i].follow(flowfield);
-    particles[i].update();
-    particles[i].edges();
-    particles[i].show();
+  if (mode === 0) {
+    for (var i = 0; i < particles.length; i++) {
+      particles[i].follow(flowfield);
+      particles[i].update();
+      particles[i].edges();
+      particles[i].show();
+    }
+  } else {
+    for (var i = 0; i < rectangles.length; i++) {
+      rectangles[i].follow(flowfield);
+      rectangles[i].update();
+      rectangles[i].edges();
+      rectangles[i].show();
+    }
   }
   
-  frameRate(40);
+  frameRate(framerateSlider.value());
 
   fr.html("FPS : " + floor(frameRate()));
   
   nbp.html('Current number of particles : ' + NB_PARTICLES);
-  nbp2.html('Number of particles in the next set : ' + particleNumberSlider.value());
+  nbp2.html('Number of particles in the next set : ' + int(particleNumberSlider.value()*particleNumberSlider.value()*particleNumberSlider.value()*particleNumberSlider.value()));
 }
