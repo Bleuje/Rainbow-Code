@@ -2,7 +2,7 @@ var inc = 0.01;
 var scl = 20;
 var cols, rows;
 
-var NB_PARTICLES = 500;
+var NB_PARTICLES = 400;
 
 var zoff = 0;
 
@@ -90,13 +90,30 @@ function setup() {
   pp6.position(1050,480);
   colorGradientSlider = createSlider(0, sqrt(50), 1.0, 0.01);
   colorGradientSlider.position(1050,500);
+  pp6bis = createP('Blend mode : ');
+  pp6bis.position(1050,520);
+  sel2 = createSelect();
+  sel2.position(1050, 540);
+  sel2.option('BLEND (default)');
+  sel2.option('ADD');
+  sel2.option('DARKEST');
+  sel2.option('LIGHTEST');
+  sel2.option('DIFFERENCE');
+  sel2.option('EXCLUSION');
+  sel2.option('MULTIPLY');
+  sel2.option('SCREEN');
+  sel2.option('OVERLAY');
+  sel2.option('DODGE');
+  sel2.option('BURN');
+  sel2.changed(mySelectEvent2);
+  
   pp7a = createP('Max pen size : ');
   pp7a.position(1050,80);
   penSizeSlider = createSlider(sqrt(5), sqrt(150), sqrt(40.0), 0.1);
   penSizeSlider.position(1050,100);
   pp7b = createP('Color alpha : ');
   pp7b.position(1050,120);
-  alphaSlider = createSlider(1, 255, 255, 1);
+  alphaSlider = createSlider(0, 1, 1, 0.001);
   alphaSlider.position(1050,140);
   pp8 = createP('Color contrast, color brightness : ');
   pp8.position(1050,160);
@@ -140,7 +157,7 @@ function setup() {
   nbp.position(340,520);
   nbp2 = createP('Number of particles in the next set : ');
   nbp2.position(340,540);
-  particleNumberSlider = createSlider(1, sqrt(sqrt(3000)), sqrt(sqrt(500)), 0.01);
+  particleNumberSlider = createSlider(1, sqrt(sqrt(3000)), sqrt(sqrt(400)), 0.01);
   particleNumberSlider.position(340,560);
   
   p1 = createP('Border bounce : ');
@@ -211,14 +228,45 @@ function setup() {
   stylestroke.position(20,530);
   penstrokeSlider = createSlider(1, 10, 1, 1);
   penstrokeSlider.position(20,550);
+  
+  
 }
 
 function mySelectEvent() {
   defsel = sel.value();
 }
 
+function mySelectEvent2() {
+  var choice = sel2.value();
+  if (choice === 'BLEND (default)') {
+    blendMode(BLEND);
+  } else if (choice === 'ADD') {
+    blendMode(ADD);
+  } else if (choice === 'DARKEST') {
+    blendMode(DARKEST);
+  } else if (choice === 'LIGHTEST') {
+    blendMode(LIGHTEST);
+  } else if (choice === 'DIFFERENCE') {
+    blendMode(DIFFERENCE);
+  } else if (choice === 'EXCLUSION') {
+    blendMode(EXCLUSION);
+  } else if (choice === 'MULTIPLY') {
+    blendMode(MULTIPLY);
+  } else if (choice === 'SCREEN') {
+    blendMode(SCREEN);
+  } else if (choice === 'OVERLAY') {
+    blendMode(OVERLAY);
+  } else if (choice === 'DODGE') {
+    blendMode(DODGE);
+  } else if (choice === 'BURN') {
+    blendMode(BURN);
+  }
+}
+
 function clear_canvas() {
-  background(255);
+  blendMode(BLEND);
+  background(fade2Slider.value());
+  blendMode(curMode);
 }
 
 function change_color() {
@@ -324,8 +372,12 @@ function canvas_save() {
 }
 
 function draw() {
+  blendMode(BLEND);
+  
   var aux = fade1Slider.value();
   background(fade2Slider.value(),255*aux*aux*aux);
+  
+  mySelectEvent2();
   
   var yoff = 0;
   for (var y = 0; y < rows; y++) {

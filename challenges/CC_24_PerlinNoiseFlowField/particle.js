@@ -77,7 +77,7 @@ function Particle(pos_seed) {
     var myred = this.start_red + this.amp_red*param;
     var mygreen = this.start_green + this.amp_green*param2;
     var myblue = this.start_blue + this.amp_blue*param3;
-    var myalpha = alphaSlider.value();
+    var myalpha = alphaSlider.value()*alphaSlider.value()*255;
     
     stroke(myred, mygreen, myblue, myalpha);
     
