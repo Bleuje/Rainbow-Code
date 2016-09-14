@@ -108,7 +108,7 @@ function Rectangle(pos_seed) {
 
   this.edges = function() {
     
-    if (bounceSlider.value()) {
+    if (bounce) {
       if (this.pos.x > width) {
         this.vel.x *= -0.5;
       }

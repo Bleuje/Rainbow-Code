@@ -21,6 +21,7 @@ var HEI = 400;
 var speedSlide,incSlider,forceNoiseSlider,forceMagSlider,brightSlider;
 
 var defsel = 'line';
+var bounce = false;
 
 var playing = true;
 
@@ -109,7 +110,7 @@ function setup() {
   
   pp7a = createP('Max pen size : ');
   pp7a.position(1050,80);
-  penSizeSlider = createSlider(sqrt(5), sqrt(150), sqrt(40.0), 0.1);
+  penSizeSlider = createSlider(sqrt(5), sqrt(300), sqrt(40.0), 0.1);
   penSizeSlider.position(1050,100);
   pp7b = createP('Color alpha : ');
   pp7b.position(1050,120);
@@ -154,22 +155,24 @@ function setup() {
   
   
   nbp = createP('Current number of particles : ' + NB_PARTICLES);
-  nbp.position(340,520);
+  nbp.position(400,520);
   nbp2 = createP('Number of particles in the next set : ');
-  nbp2.position(340,540);
+  nbp2.position(400,540);
   particleNumberSlider = createSlider(1, sqrt(sqrt(3000)), sqrt(sqrt(400)), 0.01);
-  particleNumberSlider.position(340,560);
+  particleNumberSlider.position(400,560);
   
-  p1 = createP('Border bounce : ');
-  p1.position(560,520);
-  bounceSlider = createSlider(0, 1, 0, 1);
-  bounceSlider.position(560,540);
-  p2 = createP('Mouse attraction/repulsion and swirl factors : ');
-  p2.position(720,520);
+  bounceCbox = createCheckbox('Border bounce',false);
+  bounceCbox.position(600,520);
+  bounceCbox.changed(myCheckedEvent);
+  
+  p2 = createP('Mouse-click attraction/repulsion :');
+  p2.position(20,490);
   mouseSlider = createSlider(-5, 5, -1.4, 0.01);
-  mouseSlider.position(720,540);
+  mouseSlider.position(20,510);
+  p2 = createP('Mouse-click swirl :');
+  p2.position(20,530);
   mouseSwirlSlider = createSlider(-4, 4, 0, 0.01);
-  mouseSwirlSlider.position(720,560);
+  mouseSwirlSlider.position(20,550);
   p3 = createP('Color offsets : ');
   p3.position(1050,240);
   redoSlider = createSlider(0, 10, 10*noise(10000), 0.01);
@@ -178,7 +181,7 @@ function setup() {
   greenoSlider.position(1050,280);
   blueoSlider = createSlider(0, 10, 10*noise(30000), 0.01);
   blueoSlider.position(1050,300);
-  p4 = createP('Color oscillation periods : ');
+  p4 = createP('Color oscillation frequencies : ');
   p4bis = createP('(Align them or set them to 0 to get simpler color gradients)');
   p4.position(1050,320);
   p4bis.position(1050,340);
@@ -214,9 +217,9 @@ function setup() {
   freezeSlider.position(200,620);
   
   psel = createP('<strong>Pen style :</strong>')
-  psel.position(20,490);
+  psel.position(1050,40);
   sel = createSelect();
-  sel.position(20, 510);
+  sel.position(1050, 60);
   sel.option('line');
   sel.option('circle');
   sel.option('square');
@@ -225,15 +228,24 @@ function setup() {
   sel.changed(mySelectEvent);
   
   stylestroke = createP('Stroke weight : ');
-  stylestroke.position(20,530);
+  stylestroke.position(1175,40);
+  stylestroke.hide();
   penstrokeSlider = createSlider(1, 10, 1, 1);
-  penstrokeSlider.position(20,550);
+  penstrokeSlider.position(1175,60);
+  penstrokeSlider.hide();
   
   
 }
 
 function mySelectEvent() {
   defsel = sel.value();
+  if (defsel === 'empty square' || defsel === 'empty circle') {
+    penstrokeSlider.show();
+    stylestroke.show();
+  } else {
+    penstrokeSlider.hide();
+    stylestroke.hide();
+  }
 }
 
 function mySelectEvent2() {
@@ -312,6 +324,16 @@ function remove_bias() {
   sbiasRSlider.remove();
   sbiasRSlider = createSlider(-5.0, 5.0, -0.3, 0.01);
   sbiasRSlider.position(20,440);
+}
+
+function myCheckedEvent() {
+  if (this.checked()) {
+    bounce = true;
+    console.log("Checking!");
+  } else {
+    bounce = false;
+    console.log("Unchecking!");
+  }
 }
 
 function reset() {

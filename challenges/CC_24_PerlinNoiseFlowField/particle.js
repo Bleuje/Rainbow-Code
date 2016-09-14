@@ -99,7 +99,7 @@ function Particle(pos_seed) {
         strokeWeight(penstrokeSlider.value());
         var radius = aux_sz*aux_sz*sw*sw*sw;
         fill(myred, mygreen, myblue, myalpha);
-        rect(this.pos.x, this.pos.y, radius,radius);
+        rect(this.pos.x - radius/2, this.pos.y - radius/2, radius,radius);
     } else if (defsel === 'empty circle') {
         strokeWeight(penstrokeSlider.value());
         noFill();
@@ -109,7 +109,7 @@ function Particle(pos_seed) {
         strokeWeight(penstrokeSlider.value());
         noFill();
         var radius = aux_sz*aux_sz*sw*sw*sw;
-        rect(this.pos.x, this.pos.y, radius,radius);
+        rect(this.pos.x - radius/2, this.pos.y - radius/2, radius,radius);
     }
     
     this.updatePrev();
@@ -122,7 +122,7 @@ function Particle(pos_seed) {
 
   this.edges = function() {
     
-    if (bounceSlider.value()) {
+    if (bounce) {
       if (this.pos.x > width) {
         this.vel.x *= -2;
         this.updatePrev();
