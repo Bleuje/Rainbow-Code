@@ -60,7 +60,7 @@ function Particle(pos_seed) {
     var param = (sin(0.01*redSlider.value()*this.h + redoSlider.value())+1)/2;
     var param2 = (sin(0.01*greenSlider.value()*this.h + greenoSlider.value())+1)/2;
     var param3 = (sin(0.01*blueSlider.value()*this.h + blueoSlider.value())+1)/2;
-    stroke(this.start_red + this.amp_red*param, this.start_green + this.amp_green*param2, this.start_blue + this.amp_blue*param3);
+    stroke(this.start_red + this.amp_red*param, this.start_green + this.amp_green*param2, this.start_blue + this.amp_blue*param3,alphaSlider.value());
     this.h2 = this.h2 + colorGradientSlider.value()*colorGradientSlider.value();
     this.h = this.particuleOffset*particleColorOffsetSlider.value() + this.h2;
     var sw = noise(20000 + 0.01*frameCount + this.offp);

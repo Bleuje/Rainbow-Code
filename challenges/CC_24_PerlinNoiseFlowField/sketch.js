@@ -64,33 +64,61 @@ function setup() {
   button7.mousePressed(change_mode);
   
   
-  createP('Speed : ');
+  pp1 = createP('Speed : ');
+  pp1.position(20,80);
   speedSlider = createSlider(0, 0.98, 0.7,0.02);
-  createP('Space offset : ');
+  speedSlider.position(20,100);
+  pp2 = createP('Space offset : ');
+  pp2.position(20,120);
   incSlider = createSlider(0, 0.3, inc,0.001);
-  createP('Force noise : ');
+  incSlider.position(20,140);
+  pp3 = createP('Force noise : ');
+  pp3.position(20,160);
   forceNoiseSlider = createSlider(0, 10, 2.0, 0.1);
-  createP('Force field magnitude : ');
+  forceNoiseSlider.position(20,180);
+  pp4 = createP('Force field magnitude : ');
+  pp4.position(20,200);
   forceMagSlider = createSlider(0, 10, 2.0, 0.1);
-  createP('Force field change rate : ');
+  forceMagSlider.position(20,220);
+  pp5 = createP('Force field change rate : ');
+  pp5.position(20,240);
   fieldChangeRateSlider = createSlider(0, 0.002, 0.00008, 0.00001);
-  createP('Color gradient speed : ');
+  fieldChangeRateSlider.position(20,260);
+  pp6 = createP('Color gradient speed : ');
+  pp6.position(20,280);
   colorGradientSlider = createSlider(0, sqrt(50), 1.0, 0.01);
-  createP('Max pen size : ');
+  colorGradientSlider.position(20,300);
+  pp7a = createP('Max pen size : ');
+  pp7a.position(20,320);
   penSizeSlider = createSlider(5, 150, 40.0, 1);
-  createP('Color contrast : ');
+  penSizeSlider.position(20,340);
+  pp7b = createP('Color alpha : ');
+  pp7b.position(20,360);
+  alphaSlider = createSlider(1, 255, 255, 1);
+  alphaSlider.position(20,380);
+  pp8 = createP('Color contrast : ');
+  pp8.position(20,400);
   contrastSlider = createSlider(10, 275, 125, 1);
-  createP('Color brightness : ');
+  contrastSlider.position(20,420);
+  pp9 = createP('Color brightness : ');
+  pp9.position(20,440);
   brightSlider = createSlider(10, 275, 155, 1);
-  createP('Particle color offset : ');
+  brightSlider.position(20,460);
+  pp10 = createP('Particle color offset : ');
+  pp10.position(20,480);
   particleColorOffsetSlider = createSlider(0.1, 10, 1, 0.1);
+  particleColorOffsetSlider.position(20,500);
+  
+  fr = createP('');
+  fr.position(20,530);
+  
+  
   nbp = createP('Current number of particles : ' + NB_PARTICLES);
   nbp.position(1050,100);
   nbp2 = createP('Number of particles in the next set : ');
   nbp2.position(1050,120);
   particleNumberSlider = createSlider(1, sqrt(sqrt(2500)), sqrt(sqrt(700)), 0.01);
   particleNumberSlider.position(1050,140);
-  fr = createP('');
   
   p1 = createP('Border bounce : ');
   p1.position(1050,160);
