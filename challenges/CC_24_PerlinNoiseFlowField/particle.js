@@ -44,6 +44,15 @@ function Particle(pos_seed) {
     var xx = (this.pos.x - width/2)/width;
     var yy = (this.pos.y - height/2)/height;
     this.acc.add(force);
+    
+    this.acc.x += xbiasSlider.value();
+    this.acc.y += ybiasSlider.value();
+    
+    var swirlb = createVector(-(sbiasYSlider.value() - this.pos.y) - sbiasRSlider.value()*(sbiasXSlider.value()- this.pos.x),sbiasXSlider.value()- this.pos.x - sbiasRSlider.value()*(sbiasYSlider.value() - this.pos.y));
+    swirlb.normalize();
+    swirlb.mult(sbiasSlider.value()*forceMagSlider.value());
+    this.acc.add(swirlb);
+    
     this.acc.add(createVector((2*random()-1)*forceNoiseSlider.value(),(2*random()-1)*forceNoiseSlider.value()));
     
     if (mouseIsPressed && mouseX>=0 && mouseY>=0 && mouseX<width && mouseY<height) {
@@ -51,20 +60,29 @@ function Particle(pos_seed) {
         attraction.normalize();
         attraction.mult(mouseSlider.value()*forceMagSlider.value());
         this.acc.add(attraction);
+        
+        var swirl = createVector(-(mouseY - this.pos.y),mouseX - this.pos.x);
+        swirl.normalize();
+        swirl.mult(mouseSwirlSlider.value()*forceMagSlider.value());
+        this.acc.add(swirl);
     }
     
   }
     
   this.show = function() {
-    
     var param = (sin(0.01*redSlider.value()*this.h + redoSlider.value())+1)/2;
     var param2 = (sin(0.01*greenSlider.value()*this.h + greenoSlider.value())+1)/2;
     var param3 = (sin(0.01*blueSlider.value()*this.h + blueoSlider.value())+1)/2;
+    
     stroke(this.start_red + this.amp_red*param, this.start_green + this.amp_green*param2, this.start_blue + this.amp_blue*param3,alphaSlider.value());
+    
     this.h2 = this.h2 + colorGradientSlider.value()*colorGradientSlider.value();
     this.h = this.particuleOffset*particleColorOffsetSlider.value() + this.h2;
     var sw = noise(20000 + 0.01*frameCount + this.offp);
-    strokeWeight(penSizeSlider.value()*sw*sw*sw);
+    
+    var aux_sz = penSizeSlider.value();
+    
+    strokeWeight(aux_sz*aux_sz*sw*sw*sw);
     line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
     this.updatePrev();
   }

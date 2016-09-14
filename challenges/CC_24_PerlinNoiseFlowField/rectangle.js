@@ -60,7 +60,17 @@ function Rectangle(pos_seed) {
   }
 
   this.applyForce = function(force) {
+    var pos = createVector((this.minx+this.maxx)/2,(this.miny+this.maxy)/2);
     this.acc.add(force);
+    
+    this.acc.x += xbiasSlider.value();
+    this.acc.y += ybiasSlider.value();
+    
+    var swirlb = createVector(-(sbiasYSlider.value() - (this.miny+this.maxy)/2) - sbiasRSlider.value()*(sbiasXSlider.value()- (this.minx+this.maxx)/2),sbiasXSlider.value()- (this.minx+this.maxx)/2 - sbiasRSlider.value()*(sbiasYSlider.value() - (this.miny+this.maxy)/2));
+    swirlb.normalize();
+    swirlb.mult(sbiasSlider.value()*forceMagSlider.value());
+    this.acc.add(swirlb);
+    
     this.acc.add(createVector((2*random()-1)*forceNoiseSlider.value(),(2*random()-1)*forceNoiseSlider.value()));
     
     if (mouseIsPressed && mouseX>=0 && mouseY>=0 && mouseX<width && mouseY<height) {
@@ -68,6 +78,11 @@ function Rectangle(pos_seed) {
         attraction.normalize();
         attraction.mult(mouseSlider.value()*forceMagSlider.value());
         this.acc.add(attraction);
+        
+        var swirl = createVector(-(mouseY - this.pos.y),mouseX - this.pos.x);
+        swirl.normalize();
+        swirl.mult(mouseSwirlSlider.value()*forceMagSlider.value());
+        this.acc.add(swirl);
     }
     
   }
@@ -77,12 +92,17 @@ function Rectangle(pos_seed) {
     var param = (sin(0.01*redSlider.value()*this.h + redoSlider.value())+1)/2;
     var param2 = (sin(0.01*greenSlider.value()*this.h + greenoSlider.value())+1)/2;
     var param3 = (sin(0.01*blueSlider.value()*this.h + blueoSlider.value())+1)/2;
+    
     stroke(box2Slider.value(),boxSlider.value());
     fill(this.start_red + this.amp_red*param, this.start_green + this.amp_green*param2, this.start_blue + this.amp_blue*param3,alphaSlider.value());
     this.h2 = this.h2 + colorGradientSlider.value();
     this.h = this.rectangleOffset*particleColorOffsetSlider.value() + this.h2;
     var sw = noise(20000 + 0.01*frameCount + this.offp);
-    strokeWeight(1+penSizeSlider.value()*sw*sw/40);
+    
+    var aux_sz = penSizeSlider.value();
+    
+    strokeWeight(1+aux_sz*aux_sz*sw*sw/40);
+    
     rect(this.minx, this.miny, this.maxx - this.minx, this.maxy - this.miny);
   }
 

@@ -2,7 +2,7 @@ var inc = 0.01;
 var scl = 20;
 var cols, rows;
 
-var NB_PARTICLES = 700;
+var NB_PARTICLES = 500;
 
 var zoff = 0;
 
@@ -70,7 +70,7 @@ function setup() {
   speedSlider.position(20,100);
   pp2 = createP('Space offset : ');
   pp2.position(20,120);
-  incSlider = createSlider(0, 0.3, inc,0.001);
+  incSlider = createSlider(0, sqrt(0.3), sqrt(inc),0.00001);
   incSlider.position(20,140);
   pp3 = createP('Force noise : ');
   pp3.position(20,160);
@@ -82,52 +82,75 @@ function setup() {
   forceMagSlider.position(20,220);
   pp5 = createP('Force field change rate : ');
   pp5.position(20,240);
-  fieldChangeRateSlider = createSlider(0, 0.002, 0.00008, 0.00001);
+  fieldChangeRateSlider = createSlider(0, sqrt(0.002), sqrt(0.00008), 0.0000001);
   fieldChangeRateSlider.position(20,260);
   pp6 = createP('Color gradient speed : ');
-  pp6.position(20,280);
+  pp6.position(1050,480);
   colorGradientSlider = createSlider(0, sqrt(50), 1.0, 0.01);
-  colorGradientSlider.position(20,300);
+  colorGradientSlider.position(1050,500);
   pp7a = createP('Max pen size : ');
-  pp7a.position(20,320);
-  penSizeSlider = createSlider(5, 150, 40.0, 1);
-  penSizeSlider.position(20,340);
+  pp7a.position(1050,80);
+  penSizeSlider = createSlider(sqrt(5), sqrt(150), sqrt(40.0), 0.1);
+  penSizeSlider.position(1050,100);
   pp7b = createP('Color alpha : ');
-  pp7b.position(20,360);
+  pp7b.position(1050,120);
   alphaSlider = createSlider(1, 255, 255, 1);
-  alphaSlider.position(20,380);
-  pp8 = createP('Color contrast : ');
-  pp8.position(20,400);
+  alphaSlider.position(1050,140);
+  pp8 = createP('Color contrast, color brightness : ');
+  pp8.position(1050,160);
   contrastSlider = createSlider(10, 275, 125, 1);
-  contrastSlider.position(20,420);
-  pp9 = createP('Color brightness : ');
-  pp9.position(20,440);
+  contrastSlider.position(1050,180);
   brightSlider = createSlider(10, 275, 155, 1);
-  brightSlider.position(20,460);
+  brightSlider.position(1050+150,180);
   pp10 = createP('Particle color offset : ');
-  pp10.position(20,480);
+  pp10.position(1050,200);
   particleColorOffsetSlider = createSlider(0.1, 10, 1, 0.1);
-  particleColorOffsetSlider.position(20,500);
+  particleColorOffsetSlider.position(1050,220);
+  
+  pp11 = createP('X and Y bias : ');
+  pp11.position(20,280);
+  xbiasSlider = createSlider(-10, 10, 0, 0.1);
+  xbiasSlider.position(20,300);
+  ybiasSlider = createSlider(-10, 10, 0, 0.1);
+  ybiasSlider.position(20,320);
+  pp12 = createP('Swirl bias : ');
+  pp12.position(20,340);
+  sbiasSlider = createSlider(-5, 5, 0, 0.1);
+  sbiasSlider.position(20,360);
+  pp12 = createP('Swirl bias xy position, radius : ');
+  pp12.position(20,380);
+  sbiasXSlider = createSlider(0, width, width/2, 1);
+  sbiasXSlider.position(20,400);
+  sbiasYSlider = createSlider(0, height, height/2, 1);
+  sbiasYSlider.position(20,420);
+  sbiasRSlider = createSlider(-5.0, 5.0, -0.3, 0.01);
+  sbiasRSlider.position(20,440);
+  
+  buttonbias = createButton('Remove bias');
+  buttonbias.position(20,470);
+  buttonbias.mousePressed(remove_bias);
   
   fr = createP('');
   fr.position(20,530);
   
   
   nbp = createP('Current number of particles : ' + NB_PARTICLES);
-  nbp.position(1050,100);
+  nbp.position(340,520);
   nbp2 = createP('Number of particles in the next set : ');
-  nbp2.position(1050,120);
-  particleNumberSlider = createSlider(1, sqrt(sqrt(2500)), sqrt(sqrt(700)), 0.01);
-  particleNumberSlider.position(1050,140);
+  nbp2.position(340,540);
+  particleNumberSlider = createSlider(1, sqrt(sqrt(3000)), sqrt(sqrt(500)), 0.01);
+  particleNumberSlider.position(340,560);
   
   p1 = createP('Border bounce : ');
-  p1.position(1050,160);
+  p1.position(560,520);
   bounceSlider = createSlider(0, 1, 0, 1);
-  bounceSlider.position(1050,180);
-  p2 = createP('Mouse attraction/repulsion factor : ');
-  p2.position(1050,200);
-  mouseSlider = createSlider(-4, 4, -1.4, 0.01);
-  mouseSlider.position(1050,220);
+  bounceSlider.position(560,540);
+  p2 = createP('Mouse attraction/repulsion and swirl factors : ');
+  p2.position(720,520);
+  mouseSlider = createSlider(-5, 5, -1.4, 0.01);
+  mouseSlider.position(720,540);
+  mouseSwirlSlider = createSlider(-4, 4, 0, 0.01);
+  mouseSwirlSlider.position(720,560);
   p3 = createP('Color offsets : ');
   p3.position(1050,240);
   redoSlider = createSlider(0, 10, 10*noise(10000), 0.01);
@@ -158,7 +181,7 @@ function setup() {
   framerateSlider = createSlider(1, 60, 40, 1);
   framerateSlider.position(200,540);
   
-  p7 = createP('<strong>Settings for rectangle mode : </strong>');
+  p7 = createP('<strong>Settings of rectangle mode : </strong>');
   p7.position(20,580);
   p8 = createP('Rectangle stroke : ');
   p8.position(20,600);
@@ -203,6 +226,27 @@ function new_particles() {
       rectangles[i] = new Rectangle(pseed);
     }
   }
+}
+
+function remove_bias() {
+  xbiasSlider.remove();
+  xbiasSlider = createSlider(-10, 10, 0, 0.1);
+  xbiasSlider.position(20,300);
+  ybiasSlider.remove();
+  ybiasSlider = createSlider(-10, 10, 0, 0.1);
+  ybiasSlider.position(20,320);
+  sbiasSlider.remove();
+  sbiasSlider = createSlider(-5, 5, 0, 0.1);
+  sbiasSlider.position(20,360);
+  sbiasXSlider.remove();
+  sbiasXSlider = createSlider(0, width, width/2, 1);
+  sbiasXSlider.position(20,400);
+  sbiasYSlider.remove();
+  sbiasYSlider = createSlider(0, height, height/2, 1);
+  sbiasYSlider.position(20,420);
+  sbiasRSlider.remove();
+  sbiasRSlider = createSlider(-5.0, 5.0, -0.3, 0.01);
+  sbiasRSlider.position(20,440);
 }
 
 function reset() {
@@ -275,11 +319,11 @@ function draw() {
       var v = p5.Vector.fromAngle(angle);
       v.setMag(forceMagSlider.value());
       flowfield[index] = v;
-      xoff += incSlider.value();
+      xoff += incSlider.value()*incSlider.value();
     }
-    yoff += incSlider.value();
+    yoff += incSlider.value()*incSlider.value();
 
-    zoff += fieldChangeRateSlider.value();
+    zoff += fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
     
   }
 
