@@ -101,7 +101,7 @@ function Rectangle(pos_seed) {
     
     var aux_sz = penSizeSlider.value();
     
-    strokeWeight(1+aux_sz*aux_sz*sw*sw/40);
+    strokeWeight(penstrokeSlider.value());
     
     rect(this.minx, this.miny, this.maxx - this.minx, this.maxy - this.miny);
   }

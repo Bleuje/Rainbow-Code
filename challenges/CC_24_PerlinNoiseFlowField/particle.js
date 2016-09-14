@@ -74,7 +74,12 @@ function Particle(pos_seed) {
     var param2 = (sin(0.01*greenSlider.value()*this.h + greenoSlider.value())+1)/2;
     var param3 = (sin(0.01*blueSlider.value()*this.h + blueoSlider.value())+1)/2;
     
-    stroke(this.start_red + this.amp_red*param, this.start_green + this.amp_green*param2, this.start_blue + this.amp_blue*param3,alphaSlider.value());
+    var myred = this.start_red + this.amp_red*param;
+    var mygreen = this.start_green + this.amp_green*param2;
+    var myblue = this.start_blue + this.amp_blue*param3;
+    var myalpha = alphaSlider.value();
+    
+    stroke(myred, mygreen, myblue, myalpha);
     
     this.h2 = this.h2 + colorGradientSlider.value()*colorGradientSlider.value();
     this.h = this.particuleOffset*particleColorOffsetSlider.value() + this.h2;
@@ -82,8 +87,31 @@ function Particle(pos_seed) {
     
     var aux_sz = penSizeSlider.value();
     
-    strokeWeight(aux_sz*aux_sz*sw*sw*sw);
-    line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
+    if (defsel === 'line') {
+        strokeWeight(aux_sz*aux_sz*sw*sw*sw);
+        line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
+    } else if (defsel === 'circle') {
+        strokeWeight(penstrokeSlider.value());
+        var radius = aux_sz*aux_sz*sw*sw*sw;
+        fill(myred, mygreen, myblue, myalpha);
+        ellipse(this.pos.x, this.pos.y, radius,radius);
+    } else if (defsel === 'square') {
+        strokeWeight(penstrokeSlider.value());
+        var radius = aux_sz*aux_sz*sw*sw*sw;
+        fill(myred, mygreen, myblue, myalpha);
+        rect(this.pos.x, this.pos.y, radius,radius);
+    } else if (defsel === 'empty circle') {
+        strokeWeight(penstrokeSlider.value());
+        noFill();
+        var radius = aux_sz*aux_sz*sw*sw*sw;
+        ellipse(this.pos.x, this.pos.y, radius,radius);
+    } else if (defsel === 'empty square') {
+        strokeWeight(penstrokeSlider.value());
+        noFill();
+        var radius = aux_sz*aux_sz*sw*sw*sw;
+        rect(this.pos.x, this.pos.y, radius,radius);
+    }
+    
     this.updatePrev();
   }
 

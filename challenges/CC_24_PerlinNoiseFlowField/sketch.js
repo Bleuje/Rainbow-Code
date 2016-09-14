@@ -20,6 +20,8 @@ var HEI = 400;
 
 var speedSlide,incSlider,forceNoiseSlider,forceMagSlider,brightSlider;
 
+var defsel = 'line';
+
 var playing = true;
 
 var mode = 0;
@@ -131,7 +133,7 @@ function setup() {
   buttonbias.mousePressed(remove_bias);
   
   fr = createP('');
-  fr.position(20,530);
+  fr.position(200,500);
   
   
   nbp = createP('Current number of particles : ' + NB_PARTICLES);
@@ -176,7 +178,7 @@ function setup() {
   fade2Slider = createSlider(0, 255, 255, 1);
   fade2Slider.position(1050,460);
   
-  p6 = createP('Max frame Rate : ');
+  p6 = createP('Max frame Rate : ' + 40);
   p6.position(200,520);
   framerateSlider = createSlider(1, 60, 40, 1);
   framerateSlider.position(200,540);
@@ -193,11 +195,26 @@ function setup() {
   p9.position(200,600);
   freezeSlider = createSlider(0, 100, 50, 1);
   freezeSlider.position(200,620);
-
+  
+  psel = createP('<strong>Pen style :</strong>')
+  psel.position(20,490);
+  sel = createSelect();
+  sel.position(20, 510);
+  sel.option('line');
+  sel.option('circle');
+  sel.option('square');
+  sel.option('empty circle');
+  sel.option('empty square');
+  sel.changed(mySelectEvent);
+  
+  stylestroke = createP('Stroke weight : ');
+  stylestroke.position(20,530);
+  penstrokeSlider = createSlider(1, 10, 1, 1);
+  penstrokeSlider.position(20,550);
 }
 
-function mousePressed() {
-  //noLoop();
+function mySelectEvent() {
+  defsel = sel.value();
 }
 
 function clear_canvas() {
@@ -346,6 +363,7 @@ function draw() {
   frameRate(framerateSlider.value());
 
   fr.html("FPS : " + floor(frameRate()));
+  p6.html('Max frame Rate : ' + framerateSlider.value());
   
   nbp.html('Current number of particles : ' + NB_PARTICLES);
   nbp2.html('Number of particles in the next set : ' + int(particleNumberSlider.value()*particleNumberSlider.value()*particleNumberSlider.value()*particleNumberSlider.value()));
