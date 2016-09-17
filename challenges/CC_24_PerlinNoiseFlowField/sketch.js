@@ -2,7 +2,7 @@ var inc = 0.01;
 var scl = 20;
 var cols, rows;
 
-var NB_PARTICLES = 400;
+var NB_PARTICLES = 250;
 
 var zoff = 0;
 
@@ -22,6 +22,7 @@ var speedSlide,incSlider,forceNoiseSlider,forceMagSlider,brightSlider;
 
 var defsel = 'line';
 var bounce = false;
+var color_noise = false;
 
 var playing = true;
 
@@ -142,10 +143,15 @@ function setup() {
   pp7b.position(1050,120);
   alphaSlider = createSlider(0, 1, 1, 0.001);
   alphaSlider.position(1050,140);
-  pp8 = createP('Color contrast, color brightness : ');
+  bounceCbox = createCheckbox('Color noise',false);
+  bounceCbox.position(1200,120);
+  bounceCbox.changed(myCheckedEvent2);
+  pp8 = createP('Color contrast : ');
   pp8.position(1050,160);
   contrastSlider = createSlider(10, 300, 130, 1);
   contrastSlider.position(1050,180);
+  pp8bis = createP('Color brightness : ');
+  pp8bis.position(1200,160);
   brightSlider = createSlider(10, 275, 150, 1);
   brightSlider.position(1050+150,180);
   pp10 = createP('Particle color offset : ');
@@ -158,7 +164,7 @@ function setup() {
   colornoiseSlider.position(1200,220);
   pp10t = createP('Noise \"frequency\" : ');
   pp10t.position(1200,360);
-  noisefreqSlider = createSlider(0, 3, 0.3, 0.01);
+  noisefreqSlider = createSlider(0, 1, 0.2, 0.01);
   noisefreqSlider.position(1200,380);
   
   pp11 = createP('X and Y bias : ');
@@ -192,7 +198,7 @@ function setup() {
   nbp.position(400,520);
   nbp2 = createP('Number of particles in the next set : ');
   nbp2.position(400,540);
-  particleNumberSlider = createSlider(1, sqrt(sqrt(3000)), sqrt(sqrt(400)), 0.01);
+  particleNumberSlider = createSlider(1, sqrt(sqrt(3000)), sqrt(sqrt(250)), 0.01);
   particleNumberSlider.position(400,560);
   
   bounceCbox = createCheckbox('Border bounce',false);
@@ -292,6 +298,15 @@ function setup() {
   filterframe = createP('Filter every ' + filterframeSlider.value() + ' frames : ');
   filterframe.position(1175,560);
   filterframe.hide();
+  
+    colornoiseSlider.hide();
+    noisefreqSlider.hide();
+    rednSlider.hide();
+    greennSlider.hide();
+    bluenSlider.hide();
+    p3bis.hide();
+    pp10t.hide();
+    pp10bis.hide();
   
   
 }
@@ -434,6 +449,32 @@ function myCheckedEvent() {
     console.log("Checking!");
   } else {
     bounce = false;
+    console.log("Unchecking!");
+  }
+}
+
+function myCheckedEvent2() {
+  if (this.checked()) {
+    color_noise = true;
+    colornoiseSlider.show();
+    noisefreqSlider.show();
+    rednSlider.show();
+    greennSlider.show();
+    bluenSlider.show();
+    p3bis.show();
+    pp10t.show();
+    pp10bis.show();
+    console.log("Checking!");
+  } else {
+    color_noise = false;
+    colornoiseSlider.hide();
+    noisefreqSlider.hide();
+    rednSlider.hide();
+    greennSlider.hide();
+    bluenSlider.hide();
+    p3bis.hide();
+    pp10t.hide();
+    pp10bis.hide();
     console.log("Unchecking!");
   }
 }
