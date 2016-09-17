@@ -156,9 +156,9 @@ function setup() {
   pp10bis.position(1200,200);
   colornoiseSlider = createSlider(0, 100, 0, 0.01);
   colornoiseSlider.position(1200,220);
-  pp10t = createP('Noise frequency : ');
+  pp10t = createP('Noise \"frequency\" : ');
   pp10t.position(1200,360);
-  noisefreqSlider = createSlider(0, 10, 0.3, 0.01);
+  noisefreqSlider = createSlider(0, 3, 0.3, 0.01);
   noisefreqSlider.position(1200,380);
   
   pp11 = createP('X and Y bias : ');
