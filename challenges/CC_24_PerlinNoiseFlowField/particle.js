@@ -68,22 +68,33 @@ function Particle(pos_seed) {
     }
     
   }
+
     
   this.show = function() {
-    var param = (sin(0.01*redSlider.value()*this.h + redoSlider.value())+1)/2;
-    var param2 = (sin(0.01*greenSlider.value()*this.h + greenoSlider.value())+1)/2;
-    var param3 = (sin(0.01*blueSlider.value()*this.h + blueoSlider.value())+1)/2;
     
-    var myred = this.start_red + this.amp_red*param;
-    var mygreen = this.start_green + this.amp_green*param2;
-    var myblue = this.start_blue + this.amp_blue*param3;
     var myalpha = alphaSlider.value()*alphaSlider.value()*255;
     
-    stroke(myred, mygreen, myblue, myalpha);
+    if (color_mode === 'Normal') {
+        var param = (sin(0.01*redSlider.value()*this.h + redoSlider.value())+1)/2;
+        var param2 = (sin(0.01*greenSlider.value()*this.h + greenoSlider.value())+1)/2;
+        var param3 = (sin(0.01*blueSlider.value()*this.h + blueoSlider.value())+1)/2;
+        
+        var myred = this.start_red + this.amp_red*param;
+        var mygreen = this.start_green + this.amp_green*param2;
+        var myblue = this.start_blue + this.amp_blue*param3;
+        
+        
+        stroke(myred, mygreen, myblue, myalpha);
+    } else {
+      this.grad = GRAD;
+      
+      var auxxx = this.grad.give_color(this.h);
+      stroke(auxxx[0], auxxx[1], auxxx[2], myalpha);
+    }
     
     this.h2 = this.h2 + colorGradientSlider.value()*colorGradientSlider.value();
     this.h = this.particuleOffset*particleColorOffsetSlider.value() + this.h2;
-    var sw = noise(20000 + 0.01*frameCount + this.offp);
+    var sw = (1-penNoiseSlider.value())*0.5 + penNoiseSlider.value()*noise(20000 + 0.01*frameCount + this.offp);
     
     var aux_sz = penSizeSlider.value();
     

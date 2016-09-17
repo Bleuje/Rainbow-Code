@@ -97,7 +97,7 @@ function Rectangle(pos_seed) {
     fill(this.start_red + this.amp_red*param, this.start_green + this.amp_green*param2, this.start_blue + this.amp_blue*param3,alphaSlider.value()*alphaSlider.value()*255);
     this.h2 = this.h2 + colorGradientSlider.value();
     this.h = this.rectangleOffset*particleColorOffsetSlider.value() + this.h2;
-    var sw = noise(20000 + 0.01*frameCount + this.offp);
+    var sw = (1-penNoiseSlider.value())*0.5 + penNoiseSlider.value()*noise(20000 + 0.01*frameCount + this.offp);
     
     var aux_sz = penSizeSlider.value();
     

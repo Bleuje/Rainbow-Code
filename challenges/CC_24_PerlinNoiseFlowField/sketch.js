@@ -9,9 +9,9 @@ var zoff = 0;
 var fr;
 
 var particles = [];
-
-
 var rectangles = [];
+
+var GRAD = [];
 
 var flowfield;
 
@@ -26,6 +26,10 @@ var bounce = false;
 var playing = true;
 
 var mode = 0;
+
+var capture;
+
+var color_mode = 'Normal';
 
 function setup() {
   var cnv = createCanvas(WID, HEI);
@@ -53,18 +57,25 @@ function setup() {
   
   button = createButton('Reset (R)');
   button.mousePressed(reset);
+  button.position(20,50);
   button2 = createButton('Pause/Play (P)');
   button2.mousePressed(pause_play);
+  button2.position(90,50);
   button3 = createButton('Save canvas (S)');
   button3.mousePressed(canvas_save);
+  button3.position(200,50);
   button4 = createButton('Clear canvas (C)');
   button4.mousePressed(clear_canvas);
+  button4.position(310,50);
   button5 = createButton('Change color gradient (G)');
   button5.mousePressed(change_color);
+  button5.position(420,50);
   button6 = createButton('New set of particles (N)');
   button6.mousePressed(new_particles);
+  button6.position(600,50);
   button7 = createButton('Rectangle mode On/Off (M)');
   button7.mousePressed(change_mode);
+  button7.position(800,50);
   
   
   pp1 = createP('Speed : ');
@@ -87,7 +98,7 @@ function setup() {
   pp5.position(20,240);
   fieldChangeRateSlider = createSlider(0, sqrt(0.002), sqrt(0.00008), 0.0000001);
   fieldChangeRateSlider.position(20,260);
-  pp6 = createP('Color gradient speed : ');
+  pp6 = createP('Color gradient frequency : ');
   pp6.position(1050,480);
   colorGradientSlider = createSlider(0, sqrt(50), 1.0, 0.01);
   colorGradientSlider.position(1050,500);
@@ -108,10 +119,25 @@ function setup() {
   sel2.option('BURN');
   sel2.changed(mySelectEvent2);
   
+  pp6bis = createP('Filter : ');
+  pp6bis.position(1175,520);
+  sel4 = createSelect();
+  sel4.position(1175, 540);
+  sel4.option('NONE');
+  sel4.option('GRAY');
+  sel4.option('BLUR');
+  sel4.option('DILATE');
+  sel4.option('ERODE');
+  sel4.changed(mySelectEvent4);
+  
   pp7a = createP('Max pen size : ');
   pp7a.position(1050,80);
   penSizeSlider = createSlider(sqrt(5), sqrt(300), sqrt(40.0), 0.1);
   penSizeSlider.position(1050,100);
+  pp7c = createP('Noise : ');
+  pp7c.position(1200,80);
+  penNoiseSlider = createSlider(0, 1, 1, 0.01);
+  penNoiseSlider.position(1200,100)
   pp7b = createP('Color alpha : ');
   pp7b.position(1050,120);
   alphaSlider = createSlider(0, 1, 1, 0.001);
@@ -124,7 +150,7 @@ function setup() {
   brightSlider.position(1050+150,180);
   pp10 = createP('Particle color offset : ');
   pp10.position(1050,200);
-  particleColorOffsetSlider = createSlider(0.1, 10, 1, 0.1);
+  particleColorOffsetSlider = createSlider(0.1, 25, 1, 0.01);
   particleColorOffsetSlider.position(1050,220);
   
   pp11 = createP('X and Y bias : ');
@@ -164,6 +190,14 @@ function setup() {
   bounceCbox = createCheckbox('Border bounce',false);
   bounceCbox.position(600,520);
   bounceCbox.changed(myCheckedEvent);
+  /*
+  psel3 = createP('<strong>Color mode :</strong>')
+  psel3.position(710,520);
+  sel3 = createSelect();
+  sel3.position(710, 540);
+  sel3.option('Normal');
+  sel3.option('Capture');
+  sel3.changed(mySelectEvent3);*/
   
   p2 = createP('Mouse-click attraction/repulsion :');
   p2.position(20,490);
@@ -235,6 +269,15 @@ function setup() {
   penstrokeSlider.hide();
   
   
+  filterframeSlider = createSlider(1, 100, 30, 1);
+  filterframeSlider.position(1175,580);
+  filterframeSlider.hide();
+  
+  filterframe = createP('Filter every ' + filterframeSlider.value() + ' frames : ');
+  filterframe.position(1175,560);
+  filterframe.hide();
+  
+  
 }
 
 function mySelectEvent() {
@@ -275,6 +318,49 @@ function mySelectEvent2() {
   }
 }
 
+var dilate_unused = true;
+
+function mySelectEvent4() {
+  var choice = sel4.value();
+  if (choice === 'NONE') {
+    filterframe.hide();
+    filterframeSlider.hide();
+  } else if (choice === 'GRAY') {
+    filter(GRAY);
+    filterframe.hide();
+    filterframeSlider.hide();
+  } else if (choice === 'DILATE') {
+    filterframe.show();
+    filterframeSlider.show();
+    if(frameCount%filterframeSlider.value() === 0)  {filter(DILATE);}
+  } else if (choice === 'BLUR') {
+    filterframe.show();
+    filterframeSlider.show();
+    if(frameCount%filterframeSlider.value() === 0) filter(BLUR,1);
+  } else if (choice === 'ERODE') {
+    filterframe.show();
+    filterframeSlider.show();
+    if(frameCount%filterframeSlider.value() === 0) filter(ERODE);
+  }
+}
+
+var capture;
+/*
+function mySelectEvent3() {
+  var choice = sel3.value();
+  if (choice === 'Normal') {
+    color_mode = 'Normal';
+    capture.remove();
+  } else if (choice === 'Capture') {
+    color_mode = 'Capture';
+    capture = createCapture(VIDEO);
+    capture.size(320, 240);
+    image(capture, 0, 0, 320, 240);
+    loadPixels();
+    GRAD = new ColorG(1);
+  }
+}
+*/
 function clear_canvas() {
   blendMode(BLEND);
   background(fade2Slider.value());
@@ -394,6 +480,13 @@ function canvas_save() {
 }
 
 function draw() {
+  /*
+  if(color_mode === 'Capture'){
+    image(capture, 0, 0, 320, 240);
+    loadPixels();
+    GRAD = new ColorG(1);
+  }*/
+  
   blendMode(BLEND);
   
   var aux = fade1Slider.value();
@@ -434,6 +527,8 @@ function draw() {
     }
   }
   
+  mySelectEvent4();
+  
   frameRate(framerateSlider.value());
 
   fr.html("FPS : " + floor(frameRate()));
@@ -441,4 +536,6 @@ function draw() {
   
   nbp.html('Current number of particles : ' + NB_PARTICLES);
   nbp2.html('Number of particles in the next set : ' + int(particleNumberSlider.value()*particleNumberSlider.value()*particleNumberSlider.value()*particleNumberSlider.value()));
+
+  filterframe.html('Filter every ' + filterframeSlider.value() + ' frames : ');
 }
