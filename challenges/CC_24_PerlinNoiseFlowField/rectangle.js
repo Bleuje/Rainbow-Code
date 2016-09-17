@@ -93,8 +93,14 @@ function Rectangle(pos_seed) {
     var param2 = (sin(0.01*greenSlider.value()*this.h + greenoSlider.value())+1)/2;
     var param3 = (sin(0.01*blueSlider.value()*this.h + blueoSlider.value())+1)/2;
     
+
+    var freq = noisefreqSlider.value()*noisefreqSlider.value();
+    var myred = this.start_red + this.amp_red*param + colornoiseSlider.value()*(noise(freq*this.h)-0.5) + rednSlider.value()*(noise(freq*this.h + 1478)-0.5);
+    var mygreen = this.start_green + this.amp_green*param2 + colornoiseSlider.value()*(noise(freq*this.h) - 0.5) + greennSlider.value()*(noise(freq*this.h + 1778)-0.5);
+    var myblue = this.start_blue + this.amp_blue*param3 + colornoiseSlider.value()*(noise(freq*this.h)-0.5) + bluenSlider.value()*(noise(freq*this.h + 1978)-0.5);
+    
     stroke(box2Slider.value(),boxSlider.value());
-    fill(this.start_red + this.amp_red*param, this.start_green + this.amp_green*param2, this.start_blue + this.amp_blue*param3,alphaSlider.value()*alphaSlider.value()*255);
+    fill(myred, mygreen, myblue, alphaSlider.value()*alphaSlider.value()*255);
     this.h2 = this.h2 + colorGradientSlider.value();
     this.h = this.rectangleOffset*particleColorOffsetSlider.value() + this.h2;
     var sw = (1-penNoiseSlider.value())*0.5 + penNoiseSlider.value()*noise(20000 + 0.01*frameCount + this.offp);

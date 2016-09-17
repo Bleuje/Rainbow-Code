@@ -78,10 +78,11 @@ function Particle(pos_seed) {
         var param = (sin(0.01*redSlider.value()*this.h + redoSlider.value())+1)/2;
         var param2 = (sin(0.01*greenSlider.value()*this.h + greenoSlider.value())+1)/2;
         var param3 = (sin(0.01*blueSlider.value()*this.h + blueoSlider.value())+1)/2;
-        
-        var myred = this.start_red + this.amp_red*param;
-        var mygreen = this.start_green + this.amp_green*param2;
-        var myblue = this.start_blue + this.amp_blue*param3;
+
+        var freq = noisefreqSlider.value()*noisefreqSlider.value();
+        var myred = this.start_red + this.amp_red*param + colornoiseSlider.value()*(noise(freq*this.h)-0.5) + rednSlider.value()*(noise(freq*this.h + 1478)-0.5);
+        var mygreen = this.start_green + this.amp_green*param2 + colornoiseSlider.value()*(noise(freq*this.h) - 0.5) + greennSlider.value()*(noise(freq*this.h + 1778)-0.5);
+        var myblue = this.start_blue + this.amp_blue*param3 + colornoiseSlider.value()*(noise(freq*this.h)-0.5) + bluenSlider.value()*(noise(freq*this.h + 1978)-0.5);
         
         
         stroke(myred, mygreen, myblue, myalpha);

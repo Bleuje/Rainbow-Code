@@ -144,7 +144,7 @@ function setup() {
   alphaSlider.position(1050,140);
   pp8 = createP('Color contrast, color brightness : ');
   pp8.position(1050,160);
-  contrastSlider = createSlider(10, 275, 125, 1);
+  contrastSlider = createSlider(10, 300, 135, 1);
   contrastSlider.position(1050,180);
   brightSlider = createSlider(10, 275, 155, 1);
   brightSlider.position(1050+150,180);
@@ -152,6 +152,14 @@ function setup() {
   pp10.position(1050,200);
   particleColorOffsetSlider = createSlider(0.1, 25, 1, 0.01);
   particleColorOffsetSlider.position(1050,220);
+  pp10bis = createP('Synchronized color noise : ');
+  pp10bis.position(1200,200);
+  colornoiseSlider = createSlider(0, 100, 0, 0.01);
+  colornoiseSlider.position(1200,220);
+  pp10t = createP('Noise frequency : ');
+  pp10t.position(1200,360);
+  noisefreqSlider = createSlider(0, 10, 0.3, 0.01);
+  noisefreqSlider.position(1200,380);
   
   pp11 = createP('X and Y bias : ');
   pp11.position(20,280);
@@ -215,6 +223,14 @@ function setup() {
   greenoSlider.position(1050,280);
   blueoSlider = createSlider(0, 10, 10*noise(30000), 0.01);
   blueoSlider.position(1050,300);
+  p3bis = createP('Specialized noise intensity : ');
+  p3bis.position(1200,240);
+  rednSlider = createSlider(0, 100, 0, 0.01);
+  rednSlider.position(1200,260);
+  greennSlider = createSlider(0, 100, 0, 0.01);
+  greennSlider.position(1200,280);
+  bluenSlider = createSlider(0, 100, 0, 0.01);
+  bluenSlider.position(1200,300);
   p4 = createP('Color oscillation frequencies : ');
   p4bis = createP('(Align them or set them to 0 to get simpler color gradients)');
   p4.position(1050,320);
