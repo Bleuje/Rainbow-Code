@@ -130,11 +130,11 @@ function setup() {
   sel4.option('ERODE');
   sel4.changed(mySelectEvent4);
   
-  pp7a = createP('Max pen size : ');
+  pp7a = createP('Pen size : ');
   pp7a.position(1050,80);
   penSizeSlider = createSlider(sqrt(5), sqrt(300), sqrt(40.0), 0.1);
   penSizeSlider.position(1050,100);
-  pp7c = createP('Noise : ');
+  pp7c = createP('Pen size noise : ');
   pp7c.position(1200,80);
   penNoiseSlider = createSlider(0, 1, 1, 0.01);
   penNoiseSlider.position(1200,100)
@@ -144,9 +144,9 @@ function setup() {
   alphaSlider.position(1050,140);
   pp8 = createP('Color contrast, color brightness : ');
   pp8.position(1050,160);
-  contrastSlider = createSlider(10, 300, 135, 1);
+  contrastSlider = createSlider(10, 300, 130, 1);
   contrastSlider.position(1050,180);
-  brightSlider = createSlider(10, 275, 155, 1);
+  brightSlider = createSlider(10, 275, 150, 1);
   brightSlider.position(1050+150,180);
   pp10 = createP('Particle color offset : ');
   pp10.position(1050,200);
