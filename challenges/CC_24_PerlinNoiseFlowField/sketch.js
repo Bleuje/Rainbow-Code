@@ -23,7 +23,7 @@ var speedSlide,incSlider,forceNoiseSlider,forceMagSlider,brightSlider;
 var defsel = 'line';
 var bounce = false;
 var color_noise = false;
-var field_mode = 1;
+var field_mode = 0;
 
 var playing = true;
 
@@ -288,8 +288,8 @@ function setup() {
   psel5.position(600, 540);
   sel5 = createSelect();
   sel5.position(600, 560);
-  sel5.option('Moving torus in 3D');
   sel5.option('Basic');
+  sel5.option('Moving torus in 3D');
   sel5.changed(mySelectEvent5);
   
   stylestroke = createP('Stroke weight : ');
