@@ -588,9 +588,9 @@ function draw() {
         var radius_x = 0.15*incSlider.value()*cols/(2*PI);
         var radius_y = 0.15*incSlider.value()*rows/(2*PI);
         var r = radius_x + radius_y*cos(2*PI*t2);
-        var xx = 1.5*r*cos(2*PI*t);
-        var yy = 1.5*r*sin(2*PI*t);
-        var zz = radius_y*sin(2*PI*t2);
+        var xx = 0.75*r*cos(2*PI*t);
+        var yy = 0.75*r*sin(2*PI*t);
+        var zz = 0.75*radius_y*sin(2*PI*t2);
   
         var angle = noise(xx + z_xoff, yy + z_yoff, zz + z_zoff) * TWO_PI * 8;
         var v = p5.Vector.fromAngle(angle);
