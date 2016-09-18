@@ -255,7 +255,7 @@ function setup() {
   fade2Slider = createSlider(0, 255, 255, 1);
   fade2Slider.position(1050,460);
   
-  p6 = createP('Max frame Rate : ' + 40);
+  p6 = createP('Max frame rate : ' + 40);
   p6.position(200,520);
   framerateSlider = createSlider(1, 60, 40, 1);
   framerateSlider.position(200,540);
@@ -583,24 +583,24 @@ function draw() {
       for (var x = 0; x < cols; x++) {
         var index = x + y * cols;
         
-        var t = x/(2*cols);
+        var t = x/cols;
         var t2 = y/rows;
-        var radius_x = 0.15*incSlider.value()*cols/(2*PI);
-        var radius_y = 0.15*incSlider.value()*rows/(2*PI);
+        var radius_x = 0.07*incSlider.value()*cols/(2*PI);
+        var radius_y = 0.07*incSlider.value()*rows/(2*PI);
         var r = radius_x + radius_y*cos(2*PI*t2);
-        var xx = 0.75*r*cos(2*PI*t);
-        var yy = 0.75*r*sin(2*PI*t);
-        var zz = 0.75*radius_y*sin(2*PI*t2);
+        var xx = r*cos(2*PI*t);
+        var yy = r*sin(2*PI*t);
+        var zz = radius_y*sin(2*PI*t2);
   
-        var angle = noise(xx + z_xoff, yy + z_yoff, zz + z_zoff) * TWO_PI * 8;
+        var angle = noise(xx + z_xoff, yy + z_yoff, zz + z_zoff) * TWO_PI * 4;
         var v = p5.Vector.fromAngle(angle);
         v.setMag(forceMagSlider.value());
         flowfield[index] = v;
       }
       //zoff += fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
-      z_xoff += random()*fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
-      z_yoff += random()*fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
-      z_zoff += random()*fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
+      z_xoff += 2*random()*fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
+      z_yoff += 2*random()*fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
+      z_zoff += 2*random()*fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
     }
   }
 
@@ -625,7 +625,7 @@ function draw() {
   frameRate(framerateSlider.value());
 
   fr.html("FPS : " + floor(frameRate()));
-  p6.html('Max frame Rate : ' + framerateSlider.value());
+  p6.html('Max frame rate : ' + framerateSlider.value());
   
   nbp.html('Current number of particles : ' + NB_PARTICLES);
   nbp2.html('Number of particles in the next set : ' + int(particleNumberSlider.value()*particleNumberSlider.value()*particleNumberSlider.value()*particleNumberSlider.value()));
