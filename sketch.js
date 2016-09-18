@@ -2,7 +2,7 @@ var inc = 0.01;
 var scl = 20;
 var cols, rows;
 
-var NB_PARTICLES = 400;
+var NB_PARTICLES = 250;
 
 var zoff = 0;
 
@@ -22,6 +22,8 @@ var speedSlide,incSlider,forceNoiseSlider,forceMagSlider,brightSlider;
 
 var defsel = 'line';
 var bounce = false;
+var color_noise = false;
+var field_mode = 1;
 
 var playing = true;
 
@@ -130,11 +132,11 @@ function setup() {
   sel4.option('ERODE');
   sel4.changed(mySelectEvent4);
   
-  pp7a = createP('Max pen size : ');
+  pp7a = createP('Pen size : ');
   pp7a.position(1050,80);
   penSizeSlider = createSlider(sqrt(5), sqrt(300), sqrt(40.0), 0.1);
   penSizeSlider.position(1050,100);
-  pp7c = createP('Noise : ');
+  pp7c = createP('Pen size noise : ');
   pp7c.position(1200,80);
   penNoiseSlider = createSlider(0, 1, 1, 0.01);
   penNoiseSlider.position(1200,100)
@@ -142,11 +144,16 @@ function setup() {
   pp7b.position(1050,120);
   alphaSlider = createSlider(0, 1, 1, 0.001);
   alphaSlider.position(1050,140);
-  pp8 = createP('Color contrast, color brightness : ');
+  bounceCbox = createCheckbox('Color noise',false);
+  bounceCbox.position(1200,120);
+  bounceCbox.changed(myCheckedEvent2);
+  pp8 = createP('Color contrast : ');
   pp8.position(1050,160);
-  contrastSlider = createSlider(10, 300, 135, 1);
+  contrastSlider = createSlider(10, 300, 130, 1);
   contrastSlider.position(1050,180);
-  brightSlider = createSlider(10, 275, 155, 1);
+  pp8bis = createP('Color brightness : ');
+  pp8bis.position(1200,160);
+  brightSlider = createSlider(10, 275, 150, 1);
   brightSlider.position(1050+150,180);
   pp10 = createP('Particle color offset : ');
   pp10.position(1050,200);
@@ -156,9 +163,9 @@ function setup() {
   pp10bis.position(1200,200);
   colornoiseSlider = createSlider(0, 100, 0, 0.01);
   colornoiseSlider.position(1200,220);
-  pp10t = createP('Noise frequency : ');
+  pp10t = createP('Noise \"frequency\" : ');
   pp10t.position(1200,360);
-  noisefreqSlider = createSlider(0, 3, 0.3, 0.01);
+  noisefreqSlider = createSlider(0, 1, 0.2, 0.01);
   noisefreqSlider.position(1200,380);
   
   pp11 = createP('X and Y bias : ');
@@ -192,7 +199,7 @@ function setup() {
   nbp.position(400,520);
   nbp2 = createP('Number of particles in the next set : ');
   nbp2.position(400,540);
-  particleNumberSlider = createSlider(1, sqrt(sqrt(3000)), sqrt(sqrt(400)), 0.01);
+  particleNumberSlider = createSlider(1, sqrt(sqrt(3000)), sqrt(sqrt(250)), 0.01);
   particleNumberSlider.position(400,560);
   
   bounceCbox = createCheckbox('Border bounce',false);
@@ -277,6 +284,14 @@ function setup() {
   sel.option('empty square');
   sel.changed(mySelectEvent);
   
+  psel5 = createP('<strong>Field type :</strong>')
+  psel5.position(600, 540);
+  sel5 = createSelect();
+  sel5.position(600, 560);
+  sel5.option('Moving torus in 3D');
+  sel5.option('Basic');
+  sel5.changed(mySelectEvent5);
+  
   stylestroke = createP('Stroke weight : ');
   stylestroke.position(1175,40);
   stylestroke.hide();
@@ -292,6 +307,15 @@ function setup() {
   filterframe = createP('Filter every ' + filterframeSlider.value() + ' frames : ');
   filterframe.position(1175,560);
   filterframe.hide();
+  
+    colornoiseSlider.hide();
+    noisefreqSlider.hide();
+    rednSlider.hide();
+    greennSlider.hide();
+    bluenSlider.hide();
+    p3bis.hide();
+    pp10t.hide();
+    pp10bis.hide();
   
   
 }
@@ -357,6 +381,15 @@ function mySelectEvent4() {
     filterframe.show();
     filterframeSlider.show();
     if(frameCount%filterframeSlider.value() === 0) filter(ERODE);
+  }
+}
+
+function mySelectEvent5() {
+  var choice = sel5.value();
+  if (choice === 'Moving torus in 3D') {
+    field_mode = 1;
+  } else if (choice === 'Basic') {
+    field_mode = 0;
   }
 }
 
@@ -438,6 +471,32 @@ function myCheckedEvent() {
   }
 }
 
+function myCheckedEvent2() {
+  if (this.checked()) {
+    color_noise = true;
+    colornoiseSlider.show();
+    noisefreqSlider.show();
+    rednSlider.show();
+    greennSlider.show();
+    bluenSlider.show();
+    p3bis.show();
+    pp10t.show();
+    pp10bis.show();
+    console.log("Checking!");
+  } else {
+    color_noise = false;
+    colornoiseSlider.hide();
+    noisefreqSlider.hide();
+    rednSlider.hide();
+    greennSlider.hide();
+    bluenSlider.hide();
+    p3bis.hide();
+    pp10t.hide();
+    pp10bis.hide();
+    console.log("Unchecking!");
+  }
+}
+
 function reset() {
     location.reload();
     seedRandom();
@@ -459,19 +518,6 @@ function pause_play() {
       loop();
     }
 }
-
-  button = createButton('Reset (R)');
-  button.mousePressed(reset);
-  button2 = createButton('Pause/Play (P)');
-  button2.mousePressed(pause_play);
-  button3 = createButton('Save canvas (S)');
-  button3.mousePressed(canvas_save);
-  button4 = createButton('Clear canvas (C)');
-  button4.mousePressed(clear_canvas);
-  button5 = createButton('Change color gradient (G)');
-  button5.mousePressed(change_color);
-  button6 = createButton('New set of particles (N)');
-  button6.mousePressed(new_particles);
 
 function keyTyped() {
   if (key === 'p') {
@@ -495,6 +541,11 @@ function canvas_save() {
   saveCanvas('myCanvas', 'png');
 }
 
+var z_xoff = 0;
+var z_yoff = 0;
+var z_zoff = 0;
+
+
 function draw() {
   /*
   if(color_mode === 'Capture'){
@@ -510,21 +561,44 @@ function draw() {
   
   mySelectEvent2();
   
-  var yoff = 0;
-  for (var y = 0; y < rows; y++) {
-    var xoff = 0;
-    for (var x = 0; x < cols; x++) {
-      var index = x + y * cols;
-      var angle = noise(xoff, yoff, zoff) * TWO_PI * 4;
-      var v = p5.Vector.fromAngle(angle);
-      v.setMag(forceMagSlider.value());
-      flowfield[index] = v;
-      xoff += incSlider.value()*incSlider.value();
+  if (field_mode === 0) {
+    var yoff = 0;
+    for (var y = 0; y < rows; y++) {
+      var xoff = 0;
+      for (var x = 0; x < cols; x++) {
+        var index = x + y * cols;
+        var angle = noise(xoff, yoff, zoff) * TWO_PI * 6;
+        var v = p5.Vector.fromAngle(angle);
+        v.setMag(forceMagSlider.value());
+        flowfield[index] = v;
+        xoff += incSlider.value()*incSlider.value();
+      }
+      yoff += incSlider.value()*incSlider.value();
+  
+      zoff += fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
+  
     }
-    yoff += incSlider.value()*incSlider.value();
-
-    zoff += fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
-    
+  } else {  
+    for (var y = 0; y < rows; y++) {
+      for (var x = 0; x < cols; x++) {
+        var index = x + y * cols;
+        
+        var t = x/(2*cols);
+        var t2 = y/rows;
+        var radius_x = 0.5*incSlider.value()*cols/(2*PI);
+        var radius_y = 0.5*incSlider.value()*rows/(2*PI);
+        var r = radius_x + radius_y*cos(2*PI*t2);
+        var xx = 2*r*cos(2*PI*t);
+        var yy = 2*r*sin(2*PI*t);
+        var zz = radius_y*sin(2*PI*t2);
+  
+        var angle = noise(xx + 1.5*zoff, yy + 1.5*zoff, zz + 1.5*zoff) * TWO_PI * 4;
+        var v = p5.Vector.fromAngle(angle);
+        v.setMag(forceMagSlider.value());
+        flowfield[index] = v;
+      }
+      zoff += fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
+    }
   }
 
   if (mode === 0) {
