@@ -588,11 +588,11 @@ function draw() {
         var radius_x = 0.5*incSlider.value()*cols/(2*PI);
         var radius_y = 0.5*incSlider.value()*rows/(2*PI);
         var r = radius_x + radius_y*cos(2*PI*t2);
-        var xx = 2*r*cos(2*PI*t);
-        var yy = 2*r*sin(2*PI*t);
+        var xx = 1.5*r*cos(2*PI*t);
+        var yy = 1.5*r*sin(2*PI*t);
         var zz = radius_y*sin(2*PI*t2);
   
-        var angle = noise(xx + 1.5*zoff, yy + 1.5*zoff, zz + 1.5*zoff) * TWO_PI * 4;
+        var angle = noise(xx + 0.8*zoff, yy + 0.8*zoff, zz + 0.8*zoff) * TWO_PI * 4;
         var v = p5.Vector.fromAngle(angle);
         v.setMag(forceMagSlider.value());
         flowfield[index] = v;
