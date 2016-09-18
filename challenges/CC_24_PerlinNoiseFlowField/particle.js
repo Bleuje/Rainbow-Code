@@ -22,12 +22,14 @@ function Particle(pos_seed) {
     this.pos.add(this.vel);
     this.acc.mult(0);
     
-    this.start_red = brightSlider.value()*noise(12345+ redoSlider.value());
-    this.start_green = brightSlider.value()*noise(1234+ greenoSlider.value())
-    this.start_blue = brightSlider.value()*noise(123+ blueoSlider.value());
-    this.amp_red = noise(3333+ 3*redoSlider.value())*contrastSlider.value();
-    this.amp_green = noise(2222+ 4*greenoSlider.value())*contrastSlider.value();
-    this.amp_blue = noise(1111+ 5*blueoSlider.value())*contrastSlider.value();
+    var noise0 = noise(0);
+    
+    this.start_red = brightSlider.value()*noise(12345*noise0+ redoSlider.value());
+    this.start_green = brightSlider.value()*noise(1234*noise0 + greenoSlider.value())
+    this.start_blue = brightSlider.value()*noise(2123*noise0 + blueoSlider.value());
+    this.amp_red = noise(3333*noise0 + 3*redoSlider.value())*contrastSlider.value();
+    this.amp_green = noise(2222*noise0 + 3*greenoSlider.value())*contrastSlider.value();
+    this.amp_blue = noise(1111*noise0 + 3*blueoSlider.value())*contrastSlider.value();
     
     //this.posSphere = createVector(width/2*sin(PI*this.pos.y/height)*cos(2*PI*this.pos.x/width) + width/2,height/2*cos(PI*this.pos.y/height) + height/2);
   }
