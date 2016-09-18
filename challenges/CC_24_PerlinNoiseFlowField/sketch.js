@@ -567,7 +567,7 @@ function draw() {
       var xoff = 0;
       for (var x = 0; x < cols; x++) {
         var index = x + y * cols;
-        var angle = noise(xoff, yoff, zoff) * TWO_PI * 6;
+        var angle = noise(xoff, yoff, zoff) * TWO_PI * 4;
         var v = p5.Vector.fromAngle(angle);
         v.setMag(forceMagSlider.value());
         flowfield[index] = v;
@@ -585,19 +585,22 @@ function draw() {
         
         var t = x/(2*cols);
         var t2 = y/rows;
-        var radius_x = 0.5*incSlider.value()*cols/(2*PI);
-        var radius_y = 0.5*incSlider.value()*rows/(2*PI);
+        var radius_x = 0.15*incSlider.value()*cols/(2*PI);
+        var radius_y = 0.15*incSlider.value()*rows/(2*PI);
         var r = radius_x + radius_y*cos(2*PI*t2);
         var xx = 1.5*r*cos(2*PI*t);
         var yy = 1.5*r*sin(2*PI*t);
         var zz = radius_y*sin(2*PI*t2);
   
-        var angle = noise(xx + 0.8*zoff, yy + 0.8*zoff, zz + 0.8*zoff) * TWO_PI * 4;
+        var angle = noise(xx + z_xoff, yy + z_yoff, zz + z_zoff) * TWO_PI * 8;
         var v = p5.Vector.fromAngle(angle);
         v.setMag(forceMagSlider.value());
         flowfield[index] = v;
       }
-      zoff += fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
+      //zoff += fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
+      z_xoff += random()*fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
+      z_yoff += random()*fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
+      z_zoff += random()*fieldChangeRateSlider.value()*fieldChangeRateSlider.value();
     }
   }
 
