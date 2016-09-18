@@ -35,6 +35,7 @@ var color_mode = 'Normal';
 
 function setup() {
   var cnv = createCanvas(WID, HEI);
+  cnv.style("border:1px solid #000000;");
   //var x = (windowWidth - width) / 2;
   //var y = (windowHeight - height) / 2;
   cnv.position(200, 100);
@@ -261,17 +262,17 @@ function setup() {
   framerateSlider.position(200,540);
   
   p7 = createP('<strong>Settings of rectangle mode : </strong>');
-  p7.position(20,580);
+  p7.position(20,575);
   p8 = createP('Rectangle stroke : ');
-  p8.position(20,600);
+  p8.position(20,595);
   boxSlider = createSlider(0, 255, 50, 1);
-  boxSlider.position(20,620);
+  boxSlider.position(20,615);
   box2Slider = createSlider(0, 255, 0, 1);
-  box2Slider.position(20,640);
+  box2Slider.position(20,635);
   p9 = createP('Freeze ratio : ');
-  p9.position(200,600);
+  p9.position(200,595);
   freezeSlider = createSlider(0, 100, 50, 1);
-  freezeSlider.position(200,620);
+  freezeSlider.position(200,615);
   
   psel = createP('<strong>Pen style :</strong>')
   psel.position(1050,40);
@@ -585,8 +586,8 @@ function draw() {
         
         var t = x/cols;
         var t2 = y/rows;
-        var radius_x = 0.07*incSlider.value()*cols/(2*PI);
-        var radius_y = 0.07*incSlider.value()*rows/(2*PI);
+        var radius_x = 0.2*incSlider.value()*cols/(2*PI);
+        var radius_y = 0.2*incSlider.value()*rows/(2*PI);
         var r = radius_x + radius_y*cos(2*PI*t2);
         var xx = r*cos(2*PI*t);
         var yy = r*sin(2*PI*t);
