@@ -586,8 +586,8 @@ function draw() {
         
         var t = x/cols;
         var t2 = y/rows;
-        var radius_x = 0.2*incSlider.value()*cols/(2*PI);
-        var radius_y = 0.2*incSlider.value()*rows/(2*PI);
+        var radius_x = 0.6*incSlider.value()*cols/(2*PI);
+        var radius_y = 0.5*incSlider.value()*rows/(2*PI);
         var r = radius_x + radius_y*cos(2*PI*t2);
         var xx = r*cos(2*PI*t);
         var yy = r*sin(2*PI*t);
