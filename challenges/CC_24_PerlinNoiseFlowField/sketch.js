@@ -204,7 +204,7 @@ function setup() {
   particleNumberSlider.position(400,560);
   
   bounceCbox = createCheckbox('Border bounce',false);
-  bounceCbox.position(600,520);
+  bounceCbox.position(20,540);
   bounceCbox.changed(myCheckedEvent);
   /*
   psel3 = createP('<strong>Color mode :</strong>')
@@ -216,20 +216,20 @@ function setup() {
   sel3.changed(mySelectEvent3);*/
   
   p2 = createP('Mouse-click attraction/repulsion :');
-  p2.position(20,490);
+  p2.position(610,520);
   mouseSlider = createSlider(-5, 5, -1.4, 0.01);
-  mouseSlider.position(20,510);
+  mouseSlider.position(610,540);
   p2 = createP('Mouse-click swirl :');
-  p2.position(20,530);
+  p2.position(610,560);
   mouseSwirlSlider = createSlider(-4, 4, 0, 0.01);
-  mouseSwirlSlider.position(20,550);
+  mouseSwirlSlider.position(610,580);
   p3 = createP('Color offsets : ');
   p3.position(1050,240);
-  redoSlider = createSlider(0, 10, 10*noise(10000), 0.01);
+  redoSlider = createSlider(0, 5, 5*noise(10000), 0.01);
   redoSlider.position(1050,260);
-  greenoSlider = createSlider(0, 10, 10*noise(20000), 0.01);
+  greenoSlider = createSlider(0, 5, 5*noise(20000), 0.01);
   greenoSlider.position(1050,280);
-  blueoSlider = createSlider(0, 10, 10*noise(30000), 0.01);
+  blueoSlider = createSlider(0, 5, 5*noise(30000), 0.01);
   blueoSlider.position(1050,300);
   p3bis = createP('Specialized noise intensity : ');
   p3bis.position(1200,240);
@@ -286,9 +286,9 @@ function setup() {
   sel.changed(mySelectEvent);
   
   psel5 = createP('<strong>Field type :</strong>')
-  psel5.position(600, 540);
+  psel5.position(20,500);
   sel5 = createSelect();
-  sel5.position(600, 560);
+  sel5.position(20,520);
   sel5.option('Basic');
   sel5.option('Moving torus in 3D');
   sel5.changed(mySelectEvent5);
@@ -419,6 +419,15 @@ function clear_canvas() {
 
 function change_color() {
   noiseSeed(12345*random());
+  redoSlider.remove();
+  redoSlider = createSlider(0, 5, 5*noise(10000), 0.01);
+  redoSlider.position(1050,260);
+  greenoSlider.remove();
+  greenoSlider = createSlider(0, 5, 5*noise(20000), 0.01);
+  greenoSlider.position(1050,280);
+  blueoSlider.remove();
+  blueoSlider = createSlider(0, 10, 5*noise(30000), 0.01);
+  blueoSlider.position(1050,300);
 }
 
 function new_particles() {
